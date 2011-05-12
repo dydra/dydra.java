@@ -42,9 +42,9 @@ public class Repository extends Resource {
   /**
    * Deletes all data in this repository.
    *
-   * @return a pending job
+   * @return a pending operation
    */
-  public Job clear() {
+  public Operation clear() {
     return null; // TODO: call the dydra.repository.clear RPC method
   }
 
@@ -52,9 +52,9 @@ public class Repository extends Resource {
    * Imports data from the given URL into this repository.
    *
    * @param  url a valid URL string
-   * @return a pending job
+   * @return a pending operation
    */
-  public Job importFromURL(final String url) {
+  public Operation importFromURL(final String url) {
     return null; // TODO: call the dydra.repository.import RPC method
   }
 }
