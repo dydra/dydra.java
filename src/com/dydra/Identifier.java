@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  *
  * @see http://docs.dydra.com/sdk/java
  */
-public class Identifier implements Identifiable {
+public class Identifier implements Identifiable, Comparable<Identifier> {
   public static final String     ALGORITHM = "SHA-1";
   public static final byte       SIZE      = 20;       /* bytes */
   public static final byte       LENGTH    = SIZE * 2; /* characters */
@@ -253,5 +253,18 @@ public class Identifier implements Identifiable {
    */
   public BigInteger toBigInteger() {
     return new BigInteger(1, this.data); // zero or a positive integer
+  }
+
+  /**
+   * Compares this identifier to another identifier.
+   *
+   * @param  other the identifier to compare this identifier against
+   * @return a negative integer, zero, or a positive integer as this
+   *         identifier is less than, equal to, or greater than the given
+   *         identifier
+   */
+  public int compareTo(Identifier other) {
+    return ByteBuffer.wrap(this.toByteArray()).compareTo(
+      ByteBuffer.wrap(other.toByteArray()));
   }
 }
