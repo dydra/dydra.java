@@ -32,7 +32,7 @@ public class Identifier {
   /**
    * The identifier data as a byte array.
    */
-  public byte[] data;
+  public final byte[] data;
 
   /**
    * Returns an instance of the algorithm used for computing identifiers.
