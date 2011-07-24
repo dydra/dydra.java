@@ -210,7 +210,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    */
   @Override
   public int hashCode() {
-    return toString().hashCode(); // TODO: (int32)this.data[0..3]
+    return ByteBuffer.wrap(this.data).getInt();
   }
 
   /**
