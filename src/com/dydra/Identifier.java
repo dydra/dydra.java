@@ -210,7 +210,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    */
   @Override
   public int hashCode() {
-    return ByteBuffer.wrap(this.data).getInt();
+    return toByteBuffer().getInt();
   }
 
   /**
@@ -247,6 +247,15 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
   }
 
   /**
+   * Returns a byte buffer for this identifier.
+   *
+   * @return a byte buffer with <code>Identifier.SIZE</code> bytes
+   */
+  public ByteBuffer toByteBuffer() {
+    return ByteBuffer.wrap(this.data);
+  }
+
+  /**
    * Returns the integer representation of this identifier.
    *
    * @return a non-negative integer
@@ -263,8 +272,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *         identifier is less than, equal to, or greater than the given
    *         identifier
    */
-  public int compareTo(Identifier other) {
-    return ByteBuffer.wrap(this.toByteArray()).compareTo(
-      ByteBuffer.wrap(other.toByteArray()));
+  public int compareTo(final Identifier other) {
+    return toByteBuffer().compareTo(other.toByteBuffer());
   }
 }
