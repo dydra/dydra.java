@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  *
  * @see http://docs.dydra.com/sdk/java
  */
-public class Identifier {
+public class Identifier implements Identifiable {
   public static final String     ALGORITHM = "SHA-1";
   public static final byte       SIZE      = 20;       /* bytes */
   public static final byte       LENGTH    = SIZE * 2; /* characters */
@@ -225,6 +225,16 @@ public class Identifier {
       buffer.append(Integer.toHexString((b & 0xff) + 0x100).substring(1));
     }
     return buffer.toString();
+  }
+
+  /**
+   * Returns this identifier itself.
+   *
+   * @return a Dydra.com identifier
+   */
+  @Override
+  public Identifier toIdentifier() {
+    return this;
   }
 
   /**
