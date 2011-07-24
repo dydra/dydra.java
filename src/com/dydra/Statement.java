@@ -7,7 +7,7 @@ package com.dydra;
  *
  * @see http://docs.dydra.com/sdk/java
  */
-public class Statement implements Identifiable, Comparable<Statement> {
+public class Statement implements Edge {
   /**
    * The statement identifier.
    */
@@ -113,7 +113,7 @@ public class Statement implements Identifiable, Comparable<Statement> {
    *         statement is less than, equal to, or greater than the given
    *         statement
    */
-  public int compareTo(final Statement other) {
+  public int compareTo(final Edge other) {
     return toIdentifier().compareTo(other.toIdentifier());
   }
 }
