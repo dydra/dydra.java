@@ -6,6 +6,7 @@ package com.dydra;
  * Represents a statement stored in a Dydra.com repository.
  *
  * @see http://docs.dydra.com/sdk/java
+ * @see http://en.wikipedia.org/wiki/Resource_Description_Framework#Overview
  */
 public class Statement implements Edge {
   /**
