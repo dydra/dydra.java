@@ -20,3 +20,9 @@ namespace :version do
     sh "git tag -s #{VERSION_STRING} -m 'Released version #{VERSION_STRING}.'"
   end
 end
+
+task :build do
+  sh "javac -d pkg src/com/dydra/*.java src/com/dydra/annotation/*.java"
+end
+
+task :default => :build
