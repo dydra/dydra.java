@@ -1,5 +1,6 @@
 package com.dydra;
 
+import com.dydra.annotation.*;
 import java.util.Iterator;
 
 /**
@@ -11,7 +12,7 @@ public class Account extends Resource {
   /**
    * The account name.
    */
-  public String name;
+  public final String name;
 
   /**
    * Constructs...
@@ -29,6 +30,7 @@ public class Account extends Resource {
    * @param  name a valid repository name
    * @return the repository
    */
+  @NotNull
   public Repository getRepository(final String name) {
     return new Repository(this.name + "/" + name);
   }
@@ -38,7 +40,8 @@ public class Account extends Resource {
    *
    * @return a repository iterator
    */
+  @NotNull
   public Iterator<Repository> getRepositories() {
-    return null; // TODO
+    throw new UnsupportedOperationException("not implemented");
   }
 }

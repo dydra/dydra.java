@@ -1,5 +1,7 @@
 package com.dydra;
 
+import com.dydra.annotation.*;
+
 /**
  * Represents a Dydra.com operation.
  *
@@ -16,14 +18,14 @@ public class Operation extends Resource {
   /**
    * The operation UUID.
    */
-  public String uuid;
+  public final String uuid;
 
   /**
    * Constructs an operation instance.
    *
    * @param uuid a valid operation UUID
    */
-  public Operation(final String uuid) {
+  public Operation(@NotNull final String uuid) {
     super(uuid); // FIXME
     this.uuid = uuid;
   }
@@ -33,7 +35,7 @@ public class Operation extends Resource {
    *
    * @return the operation UUID
    */
-  @Override
+  @Override @NotNull
   public String toString() {
     return this.uuid;
   }
@@ -84,6 +86,7 @@ public class Operation extends Resource {
   /**
    * Returns the current status of this operation.
    */
+  @NotNull
   public String getStatus() {
     return STATUS_UNKNOWN; // TODO
   }
@@ -93,6 +96,7 @@ public class Operation extends Resource {
    *
    * @return this
    */
+  @NotNull
   public Operation waitUntilDone() {
     return this.waitUntilDone(-1);
   }
@@ -103,6 +107,7 @@ public class Operation extends Resource {
    * @param  timeout
    * @return this
    */
+  @NotNull
   public Operation waitUntilDone(double timeout) {
     // TODO
     return this;
@@ -113,6 +118,7 @@ public class Operation extends Resource {
    *
    * @return this
    */
+  @NotNull
   public Operation abort() {
     // TODO
     return this;

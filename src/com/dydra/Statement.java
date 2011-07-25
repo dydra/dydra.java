@@ -2,6 +2,8 @@
 
 package com.dydra;
 
+import com.dydra.annotation.*;
+
 /**
  * Represents a statement stored in a Dydra.com repository.
  *
@@ -34,7 +36,7 @@ public class Statement implements Edge {
    *
    * @param  id a statement identifier
    */
-  public Statement(final Identifier id) {
+  public Statement(@NotNull final Identifier id) {
     this.id = id;
   }
 
@@ -46,7 +48,7 @@ public class Statement implements Edge {
    * @param  p  the predicate term
    * @param  o  the object term
    */
-  public Statement(final Identifier id,
+  public Statement(@NotNull final Identifier id,
                    final Identifiable s, final Identifiable p, final Identifiable o) {
     this.id        = id;
     this.subject   = s;
@@ -62,7 +64,7 @@ public class Statement implements Edge {
    *         statement, <code>false</code> otherwise
    */
   @Override
-  public boolean equals(final Object other) {
+  public boolean equals(@Nullable final Object other) {
     return (other instanceof Statement) && equals((Statement)other);
   }
 
@@ -73,7 +75,7 @@ public class Statement implements Edge {
    * @return <code>true</code> if the given statement is equivalent to this
    *         statement, <code>false</code> otherwise
    */
-  public boolean equals(final Statement other) {
+  public boolean equals(@Nullable final Statement other) {
     return this.toIdentifier().equals(other.toIdentifier());
   }
 
@@ -92,7 +94,7 @@ public class Statement implements Edge {
    *
    * @return a hexadecimal string of length <code>Identifier.LENGTH</code>
    */
-  @Override
+  @Override @NotNull
   public String toString() {
     return this.toIdentifier().toString(); // TODO
   }
@@ -102,6 +104,7 @@ public class Statement implements Edge {
    *
    * @return a Dydra.com identifier
    */
+  @NotNull
   public Identifier toIdentifier() {
     return this.id;
   }
@@ -113,8 +116,12 @@ public class Statement implements Edge {
    * @return a negative integer, zero, or a positive integer as this
    *         statement is less than, equal to, or greater than the given
    *         statement
+   * @throws NullPointerException if <code>other</code> is null
    */
-  public int compareTo(final Edge other) {
+  public int compareTo(@NotNull final Edge other) {
+    if (other == null)
+      throw new NullPointerException("other cannot be null");
+
     return toIdentifier().compareTo(other.toIdentifier());
   }
 }

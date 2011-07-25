@@ -2,6 +2,8 @@
 
 package com.dydra;
 
+import com.dydra.annotation.*;
+
 /**
  * Represents a relation stored in a Dydra.com repository.
  *
@@ -14,7 +16,7 @@ public class Relation extends Statement {
    *
    * @param  id a statement identifier
    */
-  public Relation(final Identifier id) {
+  public Relation(@NotNull final Identifier id) {
     super(id);
   }
 
@@ -23,7 +25,7 @@ public class Relation extends Statement {
    *
    * @return a string
    */
-  @Override
+  @Override @NotNull
   public String toString() {
     return super.toString(); // TODO
   }

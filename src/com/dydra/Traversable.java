@@ -2,6 +2,7 @@
 
 package com.dydra;
 
+import com.dydra.annotation.*;
 import java.util.Iterator;
 
 /**
@@ -12,5 +13,5 @@ import java.util.Iterator;
  * @see http://en.wikipedia.org/wiki/Graph_traversal
  */
 public interface Traversable extends Iterable<Node> {
-  public Iterator<Node> iterator();
+  @NotNull public Iterator<Node> iterator();
 }

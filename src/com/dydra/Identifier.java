@@ -2,6 +2,7 @@
 
 package com.dydra;
 
+import com.dydra.annotation.*;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
@@ -39,6 +40,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a message digest algorithm instance
    */
+  @NotNull
   public static MessageDigest getAlgorithm() {
     try {
       return MessageDigest.getInstance(ALGORITHM);
@@ -54,7 +56,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  file the file to read
    * @return an identifier
    */
-  public static Identifier forFile(final File file) throws IOException {
+  @NotNull
+  public static Identifier forFile(@NotNull final File file) throws IOException {
+    if (file == null)
+      throw new NullPointerException("file cannot be null");
+
     return forStream(new FileInputStream(file));
   }
 
@@ -64,7 +70,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  stream the input stream to read
    * @return an identifier
    */
-  public static Identifier forStream(final InputStream stream) throws IOException {
+  @NotNull
+  public static Identifier forStream(@NotNull final InputStream stream) throws IOException {
+    if (stream == null)
+      throw new NullPointerException("stream cannot be null");
+
     return forChannel(Channels.newChannel(stream));
   }
 
@@ -74,7 +84,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  channel the byte channel to read
    * @return an identifier
    */
-  public static Identifier forChannel(final ReadableByteChannel channel) throws IOException {
+  @NotNull
+  public static Identifier forChannel(@NotNull final ReadableByteChannel channel) throws IOException {
+    if (channel == null)
+      throw new NullPointerException("channel cannot be null");
+
     MessageDigest algorithm = getAlgorithm();
     ByteBuffer buffer = ByteBuffer.allocate(4096); // one page at a time
     while (channel.read(buffer) != -1) {
@@ -91,7 +105,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  data the byte buffer to read
    * @return an identifier
    */
-  public static Identifier forBuffer(final ByteBuffer data) {
+  @NotNull
+  public static Identifier forBuffer(@NotNull final ByteBuffer data) {
+    if (data == null)
+      throw new NullPointerException("data cannot be null");
+
     MessageDigest algorithm = getAlgorithm();
     algorithm.update(data);
     return new Identifier(algorithm.digest());
@@ -103,7 +121,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  data the byte array to read
    * @return an identifier
    */
-  public static Identifier forBytes(final byte[] data) {
+  @NotNull
+  public static Identifier forBytes(@NotNull final byte[] data) {
+    if (data == null)
+      throw new NullPointerException("data cannot be null");
+
     MessageDigest algorithm = getAlgorithm();
     algorithm.update(data);
     return new Identifier(algorithm.digest());
@@ -115,7 +137,11 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  text the text string to read
    * @return an identifier
    */
-  public static Identifier forString(final String text) {
+  @NotNull
+  public static Identifier forString(@NotNull final String text) {
+    if (text == null)
+      throw new NullPointerException("text cannot be null");
+
     return forBytes(text.getBytes(CHARSET)); // encoded as UTF-8
   }
 
@@ -125,12 +151,16 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  id a byte array of <code>Identifier.SIZE</code> bytes
    * @return an identifier
    */
-  public Identifier(final byte[] id) {
+  public Identifier(@NotNull final byte[] id) {
+    if (id == null)
+      throw new NullPointerException("id cannot be null");
+
     if (id.length != SIZE) {
       throw new IllegalArgumentException(
         "expected a byte[" + SIZE + "] array, " +
         "but got a byte[" + id.length + "] array");
     }
+
     this.data = id;
   }
 
@@ -140,17 +170,22 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  id a hexadecimal string of length <code>Identifier.LENGTH</code>
    * @return an identifier
    */
-  public Identifier(final String id) {
+  public Identifier(@NotNull final String id) {
+    if (id == null)
+      throw new NullPointerException("id cannot be null");
+
     if (id.length() != LENGTH) {
       throw new IllegalArgumentException(
         "expected a hexadecimal string of length " + (LENGTH) +
         ", but got length " + id.length());
     }
+
     if (!PATTERN.matcher(id).matches()) {
       throw new IllegalArgumentException(
         "expected a hexadecimal string of length " + (LENGTH) +
         ", but got \"" + id.replace("\"", "\\\"") + "\"");
     }
+
     this.data = decodeHexString(id);
   }
 
@@ -160,18 +195,23 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @param  id a non-negative integer
    * @return an identifier
    */
-  public Identifier(final BigInteger id) {
+  public Identifier(@NotNull final BigInteger id) {
+    if (id == null)
+      throw new NullPointerException("id cannot be null");
+
     if (id.compareTo(BigInteger.ZERO) == -1) {
       throw new IllegalArgumentException(
         "expected a non-negative integer, but got " + id.toString());
     }
+
     this.data = decodeHexString(String.format("%040x", id));
   }
 
   /**
    * @private
    */
-  private byte[] decodeHexString(final String id) {
+  @NotNull
+  private byte[] decodeHexString(@NotNull final String id) {
     byte[] data = new byte[SIZE];
     for (int i = 0; i < LENGTH; i += 2) {
       data[i / 2] = (byte)((Character.digit(id.charAt(i), 16) << 4) +
@@ -188,7 +228,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *         identifier, <code>false</code> otherwise
    */
   @Override
-  public boolean equals(final Object other) {
+  public boolean equals(@Nullable final Object other) {
     return (other instanceof Identifier) && equals((Identifier)other);
   }
 
@@ -199,7 +239,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @return <code>true</code> if the given identifier is equivalent to this
    *         identifier, <code>false</code> otherwise
    */
-  public boolean equals(final Identifier other) {
+  public boolean equals(@Nullable final Identifier other) {
     return MessageDigest.isEqual(this.data, other.toByteArray());
   }
 
@@ -218,7 +258,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a hexadecimal string of length <code>Identifier.LENGTH</code>
    */
-  @Override
+  @Override @NotNull
   public String toString() {
     StringBuilder buffer = new StringBuilder(LENGTH);
     for (byte b : this.data) {
@@ -232,7 +272,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a Dydra.com identifier
    */
-  @Override
+  @Override @NotNull
   public Identifier toIdentifier() {
     return this;
   }
@@ -242,6 +282,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a byte array of <code>Identifier.SIZE</code> bytes
    */
+  @NotNull
   public byte[] toByteArray() {
     return this.data;
   }
@@ -251,6 +292,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a byte buffer with <code>Identifier.SIZE</code> bytes
    */
+  @NotNull
   public ByteBuffer toByteBuffer() {
     return ByteBuffer.wrap(this.data);
   }
@@ -260,6 +302,7 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    *
    * @return a non-negative integer
    */
+  @NotNull
   public BigInteger toBigInteger() {
     return new BigInteger(1, this.data); // zero or a positive integer
   }
@@ -271,8 +314,12 @@ public class Identifier implements Identifiable, Comparable<Identifier> {
    * @return a negative integer, zero, or a positive integer as this
    *         identifier is less than, equal to, or greater than the given
    *         identifier
+   * @throws NullPointerException if <code>other</code> is null
    */
-  public int compareTo(final Identifier other) {
+  public int compareTo(@NotNull final Identifier other) {
+    if (other == null)
+      throw new NullPointerException("other cannot be null");
+
     return toByteBuffer().compareTo(other.toByteBuffer());
   }
 }

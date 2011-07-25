@@ -2,6 +2,8 @@
 
 package com.dydra;
 
+import com.dydra.annotation.*;
+
 /**
  * An object for which a Dydra.com identifier can be computed.
  *
@@ -13,5 +15,5 @@ public interface Identifiable {
    *
    * @return a Dydra.com identifier
    */
-  public Identifier toIdentifier();
+  @NotNull public Identifier toIdentifier();
 }

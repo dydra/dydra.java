@@ -1,5 +1,6 @@
 package com.dydra;
 
+import com.dydra.annotation.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -23,7 +24,7 @@ public class Resource {
    *
    * @param name a root-relative resource path, without the initial slash
    */
-  public Resource(final String path) {
+  public Resource(@NotNull final String path) {
     this.path = path;
   }
 
@@ -41,7 +42,7 @@ public class Resource {
    *
    * @return a URL string
    */
-  @Override
+  @Override @NotNull
   public String toString() {
     return Client.getPublicURL(this.path);
   }
@@ -51,12 +52,13 @@ public class Resource {
    *
    * @return a URL instance
    */
+  @NotNull
   public URL toURL() {
     try {
       return new URL(toString());
     }
     catch (MalformedURLException e) {
-      return null; // should never get here
+      throw new RuntimeException(e); // should never get here
     }
   }
 }

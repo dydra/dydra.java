@@ -1,5 +1,7 @@
 package com.dydra;
 
+import com.dydra.annotation.*;
+
 /**
  * Represents a Dydra.com RDF repository.
  *
@@ -16,7 +18,7 @@ public class Repository extends Resource {
    *
    * @param name a valid repository name
    */
-  public Repository(final String name) {
+  public Repository(@NotNull final String name) {
     super(name);
     this.name = name;
   }
@@ -26,8 +28,9 @@ public class Repository extends Resource {
    *
    * @return the repository owner
    */
+  @NotNull
   public Account getAccount() {
-    return null; // TODO
+    throw new UnsupportedOperationException("not implemented");
   }
 
   /**
@@ -44,8 +47,10 @@ public class Repository extends Resource {
    *
    * @return a pending operation
    */
+  @NotNull
   public Operation clear() {
-    return null; // TODO: call the dydra.repository.clear RPC method
+    // TODO: call the dydra.repository.clear RPC method
+    throw new UnsupportedOperationException("not implemented");
   }
 
   /**
@@ -53,8 +58,14 @@ public class Repository extends Resource {
    *
    * @param  url a valid URL string
    * @return a pending operation
+   * @throws NullPointerException if <code>url</code> is null
    */
-  public Operation importFromURL(final String url) {
-    return null; // TODO: call the dydra.repository.import RPC method
+  @NotNull
+  public Operation importFromURL(@NotNull final String url) {
+    if (url == null)
+      throw new NullPointerException("url cannot be null");
+
+    // TODO: call the dydra.repository.import RPC method
+    throw new UnsupportedOperationException("not implemented");
   }
 }
