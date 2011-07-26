@@ -1,6 +1,7 @@
 package com.dydra;
 
 import com.dydra.annotation.*;
+import com.dydra.rpc.*;
 
 /**
  * Represents a Dydra.com API session.
@@ -57,6 +58,16 @@ public class Session {
     this.username = username;
     this.password = password;
     this.url      = Dydra.getAuthenticatedURL(username, password, "rpc");
+  }
+
+  /**
+   * Returns an RPC client instance for invoking RPC methods.
+   *
+   * @return an RPC client
+   */
+  @NotNull
+  public RPCClient getClient() {
+    return new RPCClient(this);
   }
 
   /**
