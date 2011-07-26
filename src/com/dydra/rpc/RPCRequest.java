@@ -28,7 +28,7 @@ public class RPCRequest extends RPCObject {
    * @param  method
    */
   public RPCRequest(@NotNull final String method) {
-    this(method, null);
+    this(method, (List<Object>)null);
   }
 
   /**
@@ -36,15 +36,30 @@ public class RPCRequest extends RPCObject {
    * arguments.
    *
    * @param  method ...
-   * @param  params ...
+   * @param  args ...
    */
-  public RPCRequest(@NotNull final String method, @Nullable final List<Object> params) {
+  public RPCRequest(@NotNull final String method, Object... args) {
+    this(method, (List<Object>)null);
+
+    for (Object arg : args) {
+      this.params.add(arg);
+    }
+  }
+
+  /**
+   * Constructs an RPC request for the given method with the given
+   * arguments.
+   *
+   * @param  method ...
+   * @param  args   ...
+   */
+  public RPCRequest(@NotNull final String method, @Nullable final List<Object> args) {
     super(RPCClient.VERSION, 1);
 
     if (method == null)
       throw new NullPointerException("method cannot be null");
 
     this.method = method;
-    this.params = (params != null) ? params : new ArrayList<Object>(0);
+    this.params = (args != null) ? args : new ArrayList<Object>(0);
   }
 }
