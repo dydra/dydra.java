@@ -22,7 +22,7 @@ namespace :version do
 end
 
 task :build do
-  sh "javac -d pkg src/com/dydra/*.java src/com/dydra/annotation/*.java"
+  sh "javac -d pkg src/com/dydra/*.java src/com/dydra/rpc/*.java src/com/dydra/annotation/*.java"
 end
 
 task :default => :build
