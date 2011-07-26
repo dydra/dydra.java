@@ -31,6 +31,16 @@ public abstract class RPCObject {
   }
 
   /**
+   * Returns the string representation of this RPC object.
+   *
+   * @return a JSON string
+   */
+  @Override @NotNull
+  public String toString() {
+    return toJSON();
+  }
+
+  /**
    * Returns the JSON string representation of this RPC object.
    *
    * @return a JSON string
