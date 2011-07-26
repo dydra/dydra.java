@@ -1,7 +1,9 @@
 package com.dydra.rpc;
 
 import com.dydra.annotation.*;
+import java.io.IOException;
 import java.util.Map;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Represents a Dydra.com RPC error.
@@ -13,7 +15,14 @@ public class RPCError extends RPCObject {
   /**
    * The error.
    */
-  public final Map<String, Object> error;
+  public Map<String, Object> error;
+
+  /**
+   * Constructs an RPC error.
+   */
+  public RPCError() {
+    super(RPCClient.VERSION, 1);
+  }
 
   /**
    * Constructs an RPC error.
@@ -27,5 +36,20 @@ public class RPCError extends RPCObject {
       throw new NullPointerException("error cannot be null");
 
     this.error = error;
+  }
+
+  /**
+   * Parses a JSON string to construct an RPC error.
+   *
+   * @param  json the JSON string
+   * @return an RPC object
+   */
+  public static RPCError parse(String json) {
+    try {
+      return (new ObjectMapper()).readValue(json, RPCError.class);
+    }
+    catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
