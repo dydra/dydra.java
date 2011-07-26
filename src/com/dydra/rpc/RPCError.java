@@ -12,31 +12,17 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @see http://docs.dydra.com/api/rpc
  */
 public class RPCError extends RPCObject {
-  /**
-   * The error.
-   */
-  public Map<String, Object> error;
-
-  /**
-   * Constructs an RPC error.
-   */
-  public RPCError() {
-    super(RPCClient.VERSION, 1);
+  public static class Error {
+    public int code;
+    public String message;
+    public Object data;
+    public Error() {}
   }
 
   /**
-   * Constructs an RPC error.
-   *
-   * @param  error ...
+   * The error detail.
    */
-  public RPCError(@NotNull final Map<String, Object> error) {
-    super(RPCClient.VERSION, 1);
-
-    if (error == null)
-      throw new NullPointerException("error cannot be null");
-
-    this.error = error;
-  }
+  public Error error;
 
   /**
    * Parses a JSON string to construct an RPC error.
@@ -51,5 +37,56 @@ public class RPCError extends RPCObject {
     catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  /**
+   * Constructs an RPC error.
+   */
+  public RPCError() {
+    super(RPCClient.VERSION, 1);
+  }
+
+  /**
+   * Constructs an RPC error.
+   *
+   * @param  error ...
+   */
+  public RPCError(@NotNull final Error error) {
+    super(RPCClient.VERSION, 1);
+
+    if (error == null)
+      throw new NullPointerException("error cannot be null");
+
+    this.error = error;
+  }
+
+  /**
+   * Returns the error code.
+   *
+   * @return an integer, or <code>null</code>
+   */
+  @Nullable
+  public Integer getCode() {
+    return (error != null) ? error.code : null;
+  }
+
+  /**
+   * Returns a short description of the error.
+   *
+   * @return a string, or <code>null</code>
+   */
+  @Nullable
+  public String getMessage() {
+    return (error != null) ? error.message : null;
+  }
+
+  /**
+   * Returns any additional data associated with the error.
+   *
+   * @return an arbitrary object, or <code>null</code>
+   */
+  @Nullable
+  public Object getData() {
+    return (error != null) ? error.data : null;
   }
 }

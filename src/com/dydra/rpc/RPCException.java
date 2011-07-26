@@ -29,7 +29,7 @@ public class RPCException extends RuntimeException {
    * @param  error the underlying RPC error
    */
   public RPCException(@Nullable final RPCError error) {
-    super((error != null) ? error.toString() : null);
+    super((error != null) ? error.getMessage() : null);
     this.error = error;
   }
 
