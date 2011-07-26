@@ -60,9 +60,11 @@ public class RPCClient {
    * @return an instance of RPCResponse
    * @throws IOException
    */
-  @NotNull
-  public RPCResponse invoke(@NotNull final String method, final Object... args) {
-    return invoke(new RPCRequest(method, args));
+  @Nullable
+  public <T> T invoke(@Nullable final Class<T> type,
+                      @NotNull final String method,
+                      @Nullable final Object... args) {
+    return invoke(type, new RPCRequest(method, args));
   }
 
   /**
@@ -70,18 +72,19 @@ public class RPCClient {
    * @return an instance of RPCResponse
    * @throws IOException
    */
-  @NotNull
-  public RPCResponse invoke(@NotNull final RPCRequest request) {
+  @Nullable
+  public <T> T invoke(@Nullable final Class<T> type,
+                      @NotNull final RPCRequest request) {
     String requestBody = request.toJSON();
     StringBuilder responseBuffer = new StringBuilder();
-    Response response;
+    Response httpResponse;
 
     try {
       Future<Response> future = this.client.post(
         new InputStreamBodyGenerator(
           new ByteArrayInputStream(requestBody.getBytes(CHARSET))),
         new AppendableBodyConsumer(responseBuffer));
-      response = future.get();
+      httpResponse = future.get();
     }
     catch (IOException e) {
       throw new RPCException(e);
@@ -93,9 +96,9 @@ public class RPCClient {
       throw new RPCException(e);
     }
 
-    if (response.getStatusCode() != 200) {
-      String errorMessage = String.valueOf(response.getStatusCode()) +
-        " " + response.getStatusText();
+    if (httpResponse.getStatusCode() != 200) {
+      String errorMessage = String.valueOf(
+        httpResponse.getStatusCode()) + " " + httpResponse.getStatusText();
       throw new RPCException(errorMessage); // FIXME
     }
 
@@ -113,6 +116,10 @@ public class RPCClient {
       throw new RPCException(RPCError.parse(responseBody));
     }
 
-    return RPCResponse.parse(responseBody);
+    this.client.close();
+
+    final RPCResponse response = RPCResponse.parse(responseBody);
+    assert(response != null);
+    return (type != null && response.result != null) ? type.cast(response.result) : null;
   }
 }
