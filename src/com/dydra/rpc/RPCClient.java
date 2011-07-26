@@ -55,51 +55,62 @@ public class RPCClient {
   /**
    * @param  method
    * @param  args
-   * @return an instance of RPCResponse or RPCError
+   * @return an instance of RPCResponse
    * @throws IOException
    */
   @NotNull
-  public RPCObject invoke(@NotNull final String method, final Object... args) throws IOException {
+  public RPCResponse invoke(@NotNull final String method, final Object... args) {
     return invoke(new RPCRequest(method, args));
   }
 
   /**
    * @param  request
-   * @return an instance of RPCResponse or RPCError
+   * @return an instance of RPCResponse
    * @throws IOException
    */
   @NotNull
-  public RPCObject invoke(@NotNull final RPCRequest request) throws IOException {
+  public RPCResponse invoke(@NotNull final RPCRequest request) {
     String requestBody = request.toJSON();
     StringBuilder responseBuffer = new StringBuilder();
-
-    Future<Response> future = this.client.post(
-      new InputStreamBodyGenerator(
-        new ByteArrayInputStream(requestBody.getBytes(CHARSET))),
-      new AppendableBodyConsumer(responseBuffer));
-    Response response = null;
+    Response response;
 
     try {
+      Future<Response> future = this.client.post(
+        new InputStreamBodyGenerator(
+          new ByteArrayInputStream(requestBody.getBytes(CHARSET))),
+        new AppendableBodyConsumer(responseBuffer));
       response = future.get();
     }
+    catch (IOException e) {
+      throw new RPCException(e);
+    }
     catch (InterruptedException e) {
-      throw new IOException(e); // FIXME
+      throw new RPCException(e);
     }
     catch (ExecutionException e) {
-      throw new IOException(e); // FIXME
+      throw new RPCException(e);
     }
 
     if (response.getStatusCode() != 200) {
       String errorMessage = String.valueOf(response.getStatusCode()) +
         " " + response.getStatusText();
-      throw new IOException(errorMessage); // FIXME
+      throw new RPCException(errorMessage); // FIXME
     }
 
     // TODO: parse the response body in a streaming manner.
     String responseBody = responseBuffer.toString();
-    Map<?, ?> responseMap = (new ObjectMapper()).readValue(responseBody, Map.class);
-    return (responseMap.containsKey("error")) ?
-      RPCError.parse(responseBody) :
-      RPCResponse.parse(responseBody);
+    Map<?, ?> responseMap;
+    try {
+      responseMap = (new ObjectMapper()).readValue(responseBody, Map.class);
+    }
+    catch (IOException e) {
+      throw new RPCException(e);
+    }
+
+    if (responseMap.containsKey("error")) {
+      throw new RPCException(RPCError.parse(responseBody));
+    }
+
+    return RPCResponse.parse(responseBody);
   }
 }
