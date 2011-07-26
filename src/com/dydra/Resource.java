@@ -44,7 +44,7 @@ public class Resource {
    */
   @Override @NotNull
   public String toString() {
-    return Client.getPublicURL(this.path);
+    return Dydra.getPublicURL(this.path);
   }
 
   /**
