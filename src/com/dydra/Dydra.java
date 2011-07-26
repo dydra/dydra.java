@@ -16,6 +16,23 @@ public final class Dydra {
   public static final String AUTH_URL = "http://%s:%s@" + HOST + "/";
 
   /**
+   * Returns the base URL for Dydra.com API access.
+   *
+   * @return a URL string
+   */
+  @NotNull
+  public static String getBaseURL() {
+    try {
+      final String baseURL = System.getenv("DYDRA_URL");
+      if (baseURL != null && !baseURL.isEmpty()) {
+        return baseURL;
+      }
+    }
+    catch (SecurityException e) {}
+    return BASE_URL;
+  }
+
+  /**
    * Returns an unauthenticated URL.
    *
    * @param  path a root-relative path, without the initial slash
@@ -23,7 +40,7 @@ public final class Dydra {
    */
   @NotNull
   public static String getPublicURL(@NotNull final String path) {
-    return BASE_URL + path;
+    return getBaseURL() + path;
   }
 
   /**
@@ -36,7 +53,7 @@ public final class Dydra {
   @NotNull
   public static String getAuthenticatedURL(@NotNull final String token,
                                            @NotNull final String path) {
-    return BASE_URL + path + "?auth_token=" + token;
+    return getBaseURL() + path + "?auth_token=" + token;
   }
 
   /**
