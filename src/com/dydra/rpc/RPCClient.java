@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
  * @see http://docs.dydra.com/api/rpc
  */
 public class RPCClient {
+  public static final String  VERSION      = "2.0";
   public static final Charset CHARSET      = Charset.forName("UTF-8");
   public static final String  CONTENT_TYPE = "application/json; charset=UTF-8";
   public static final String  USER_AGENT   = "Dydra";

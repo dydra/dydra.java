@@ -4,7 +4,6 @@ import com.dydra.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Represents a Dydra.com RPC request.
@@ -12,19 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @see http://docs.dydra.com/sdk/java
  * @see http://docs.dydra.com/api/rpc
  */
-public class RPCRequest {
-  public static final String VERSION = "2.0";
-
-  /**
-   * The protocol version.
-   */
-  public final String jsonrpc;
-
-  /**
-   * The request identifier.
-   */
-  public final int id;
-
+public class RPCRequest extends RPCObject {
   /**
    * The request method.
    */
@@ -48,31 +35,16 @@ public class RPCRequest {
    * Constructs an RPC request for the given method with the given
    * arguments.
    *
-   * @param  method
-   * @param  params
+   * @param  method ...
+   * @param  params ...
    */
   public RPCRequest(@NotNull final String method, @Nullable final List<Object> params) {
+    super(RPCClient.VERSION, 1);
+
     if (method == null)
       throw new NullPointerException("method cannot be null");
 
-    this.jsonrpc = VERSION;
-    this.id      = 1;
-    this.method  = method;
-    this.params  = (params != null) ? params : new ArrayList<Object>(0);
-  }
-
-  /**
-   * Returns the JSON string representation of this RPC request.
-   *
-   * @return a JSON string
-   */
-  @NotNull
-  public String toJSON() {
-    try {
-      return (new ObjectMapper()).writeValueAsString(this);
-    }
-    catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    this.method = method;
+    this.params = (params != null) ? params : new ArrayList<Object>(0);
   }
 }
