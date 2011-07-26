@@ -39,11 +39,17 @@ public class RPCRequest extends RPCObject {
    * @param  method ...
    * @param  args ...
    */
-  public RPCRequest(@NotNull final String method, Object... args) {
+  public RPCRequest(@NotNull final String method,
+                    @Nullable final Object... args) {
     this(method, (List<Object>)null);
 
-    for (Object arg : args) {
-      this.params.add(arg);
+    if (args == null) {
+      this.params.add(null);
+    }
+    else {
+      for (Object arg : args) {
+        this.params.add(arg);
+      }
     }
   }
 
@@ -53,8 +59,10 @@ public class RPCRequest extends RPCObject {
    *
    * @param  method ...
    * @param  args   ...
+   * @throws NullPointerException if <code>method</code> is null
    */
-  public RPCRequest(@NotNull final String method, @Nullable final List<Object> args) {
+  public RPCRequest(@NotNull final String method,
+                    @Nullable final List<Object> args) {
     super(RPCClient.VERSION, 1);
 
     if (method == null)
