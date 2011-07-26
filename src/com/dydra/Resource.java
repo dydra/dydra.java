@@ -75,4 +75,9 @@ public class Resource {
       throw new RuntimeException(e); // should never get here
     }
   }
+
+  @NotNull
+  public Session getSession() {
+    return this.session;
+  }
 }
