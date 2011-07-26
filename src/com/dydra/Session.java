@@ -58,4 +58,31 @@ public class Session {
     this.password = password;
     this.url      = Dydra.getAuthenticatedURL(username, password, "rpc");
   }
+
+  /**
+   * Returns information about the Dydra.com account associated with this
+   * session.
+   *
+   * @param  username the account name
+   * @return an account
+   */
+  @NotNull
+  public Account getAccount() {
+    return getAccount(this.username);
+  }
+
+  /**
+   * Returns information about a Dydra.com account of the given name.
+   *
+   * @param  username the account name
+   * @return an account
+   * @throws NullPointerException if <code>name</code> is null
+   */
+  @NotNull
+  public Account getAccount(@NotNull final String name) {
+    if (name == null)
+      throw new NullPointerException("name cannot be null");
+
+    return new Account(name, this);
+  }
 }
