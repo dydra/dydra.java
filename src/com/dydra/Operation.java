@@ -23,10 +23,11 @@ public class Operation extends Resource {
   /**
    * Constructs an operation instance.
    *
-   * @param uuid a valid operation UUID
+   * @param uuid    a valid operation UUID
+   * @param session
    */
-  public Operation(@NotNull final String uuid) {
-    super(uuid); // FIXME
+  public Operation(@NotNull final String uuid, @NotNull final Session session) {
+    super(uuid, session); // FIXME
     this.uuid = uuid;
   }
 

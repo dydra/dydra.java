@@ -17,15 +17,27 @@ public class Resource {
   /**
    * The resource path, relative to http://api.dydra.com/.
    */
-  public String path;
+  public final String path;
+
+  /**
+   * The session this resource is associated with.
+   */
+  public final Session session;
 
   /**
    * Constructs...
    *
    * @param name a root-relative resource path, without the initial slash
    */
-  public Resource(@NotNull final String path) {
-    this.path = path;
+  public Resource(@NotNull final String path, @NotNull final Session session) {
+    if (path == null)
+      throw new NullPointerException("path cannot be null");
+
+    if (session == null)
+      throw new NullPointerException("session cannot be null");
+
+    this.path    = path;
+    this.session = session;
   }
 
   /**

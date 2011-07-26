@@ -16,10 +16,11 @@ public class Repository extends Resource {
   /**
    * Constructs...
    *
-   * @param name a valid repository name
+   * @param name    a valid repository name
+   * @param session
    */
-  public Repository(@NotNull final String name) {
-    super(name);
+  public Repository(@NotNull final String name, @NotNull final Session session) {
+    super(name, session);
     this.name = name;
   }
 

@@ -17,10 +17,11 @@ public class Account extends Resource {
   /**
    * Constructs...
    *
-   * @param name a valid account name
+   * @param name    a valid account name
+   * @param session
    */
-  public Account(final String name) {
-    super(name);
+  public Account(@NotNull final String name, @NotNull final Session session) {
+    super(name, session);
     this.name = name;
   }
 
@@ -32,7 +33,7 @@ public class Account extends Resource {
    */
   @NotNull
   public Repository getRepository(final String name) {
-    return new Repository(this.name + "/" + name);
+    return new Repository(this.name + "/" + name, this.session);
   }
 
   /**
