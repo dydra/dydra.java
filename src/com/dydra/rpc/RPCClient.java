@@ -8,8 +8,10 @@ import com.ning.http.client.generators.InputStreamBodyGenerator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Represents a Dydra.com API session.
@@ -51,13 +53,25 @@ public class RPCClient {
   }
 
   /**
-   * @private
+   * @param  method
+   * @param  args
+   * @return an instance of RPCResponse or RPCError
+   * @throws IOException
    */
   @NotNull
-  public String invoke(String functionName) throws IOException {
-    StringBuilder responseBuffer = new StringBuilder();
+  public RPCObject invoke(@NotNull final String method, final Object... args) throws IOException {
+    return invoke(new RPCRequest(method, args));
+  }
 
-    String requestBody = new RPCRequest(functionName).toJSON();
+  /**
+   * @param  request
+   * @return an instance of RPCResponse or RPCError
+   * @throws IOException
+   */
+  @NotNull
+  public RPCObject invoke(@NotNull final RPCRequest request) throws IOException {
+    String requestBody = request.toJSON();
+    StringBuilder responseBuffer = new StringBuilder();
 
     Future<Response> future = this.client.post(
       new InputStreamBodyGenerator(
@@ -69,10 +83,10 @@ public class RPCClient {
       response = future.get();
     }
     catch (InterruptedException e) {
-      e.printStackTrace(System.err);
+      throw new IOException(e); // FIXME
     }
     catch (ExecutionException e) {
-      e.printStackTrace(System.err);
+      throw new IOException(e); // FIXME
     }
 
     if (response.getStatusCode() != 200) {
@@ -81,6 +95,11 @@ public class RPCClient {
       throw new IOException(errorMessage); // FIXME
     }
 
-    return responseBuffer.toString();
+    // TODO: parse the response body in a streaming manner.
+    String responseBody = responseBuffer.toString();
+    Map<?, ?> responseMap = (new ObjectMapper()).readValue(responseBody, Map.class);
+    return (responseMap.containsKey("error")) ?
+      RPCError.parse(responseBody) :
+      RPCResponse.parse(responseBody);
   }
 }
