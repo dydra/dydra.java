@@ -20,6 +20,16 @@ public class Account extends Resource {
    * Constructs...
    *
    * @param name    a valid account name
+   */
+  public Account(@NotNull final String name) {
+    super(name);
+    this.name = name;
+  }
+
+  /**
+   * Constructs...
+   *
+   * @param name    a valid account name
    * @param session
    */
   public Account(@NotNull final String name, @NotNull final Session session) {

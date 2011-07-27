@@ -31,6 +31,15 @@ public class Resource {
    *
    * @param name a root-relative resource path, without the initial slash
    */
+  public Resource(@NotNull final String path) {
+    this(path, new Session()); // an anonymous session
+  }
+
+  /**
+   * Constructs...
+   *
+   * @param name a root-relative resource path, without the initial slash
+   */
   public Resource(@NotNull final String path, @NotNull final Session session) {
     if (path == null)
       throw new NullPointerException("path cannot be null");
