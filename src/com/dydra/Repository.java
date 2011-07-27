@@ -3,6 +3,8 @@
 package com.dydra;
 
 import com.dydra.annotation.*;
+import com.dydra.jena.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryExecution;
 
 /**
  * Represents a Dydra.com RDF repository.
@@ -70,5 +72,21 @@ public class Repository extends Resource {
 
     // TODO: call the dydra.repository.import RPC method
     throw new UnsupportedOperationException("not implemented");
+  }
+
+  /**
+   * Prepares to execute the given SPARQL query on this repository.
+   *
+   * Note: this is a Jena-specific method.
+   *
+   * @param  queryString
+   *   the SPARQL query string, e.g. "SELECT * WHERE {?s ?p ?o} LIMIT 10"
+   */
+  @NotNull
+  public QueryExecution prepareQueryExecution(@NotNull final String queryString) {
+    if (queryString == null)
+      throw new NullPointerException("queryString cannot be null");
+
+    return QueryExecutionFactory.prepare(queryString, this);
   }
 }
