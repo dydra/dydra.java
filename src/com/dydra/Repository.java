@@ -3,7 +3,7 @@
 package com.dydra;
 
 import com.dydra.annotation.*;
-import com.dydra.jena.QueryExecutionFactory;
+import com.dydra.jena.DydraQueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryExecution;
 
 /**
@@ -97,6 +97,6 @@ public class Repository extends Resource {
     if (queryString == null)
       throw new NullPointerException("queryString cannot be null");
 
-    return QueryExecutionFactory.prepare(queryString, this);
+    return DydraQueryExecutionFactory.prepare(queryString, this);
   }
 }

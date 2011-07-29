@@ -9,8 +9,8 @@ import java.util.List;
  * @see http://docs.dydra.com/sdk/java/jena
  * @see http://openjena.org/ARQ/javadoc/com/hp/hpl/jena/query/QueryExecutionFactory.html
  */
-public class QueryExecutionFactory {
-  protected QueryExecutionFactory() {}
+public class DydraQueryExecutionFactory {
+  protected DydraQueryExecutionFactory() {}
 
   /**
    * @param  query
@@ -19,7 +19,7 @@ public class QueryExecutionFactory {
   @NotNull
   public static QueryExecution prepare(@NotNull final String query,
                                        @NotNull final Repository repository) {
-    return new QueryEngine(repository, query);
+    return new DydraQueryEngine(repository, query);
   }
 
   /**
@@ -31,7 +31,7 @@ public class QueryExecutionFactory {
   public static QueryExecution prepare(@NotNull final String query,
                                        @NotNull final Repository repository,
                                        @Nullable final String defaultGraphURI) {
-    QueryEngine engine = new QueryEngine(repository, query);
+    DydraQueryEngine engine = new DydraQueryEngine(repository, query);
     if (defaultGraphURI != null) {
       engine.addDefaultGraph(defaultGraphURI);
     }
@@ -49,7 +49,7 @@ public class QueryExecutionFactory {
                                        @NotNull final Repository repository,
                                        @Nullable final List<String> defaultGraphURIs,
                                        @Nullable final List<String> namedGraphURIs) {
-    QueryEngine engine = new QueryEngine(repository, query);
+    DydraQueryEngine engine = new DydraQueryEngine(repository, query);
     if (defaultGraphURIs != null) {
       engine.setDefaultGraphURIs(defaultGraphURIs);
     }

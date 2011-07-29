@@ -14,7 +14,7 @@ import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
  * @see http://docs.dydra.com/sdk/java/jena
  * @see http://openjena.org/ARQ/javadoc/com/hp/hpl/jena/query/QueryExecution.html
  */
-public class QueryEngine extends QueryEngineHTTP implements QueryExecution {
+public class DydraQueryEngine extends QueryEngineHTTP implements QueryExecution {
   /**
    * Constructs a query engine for executing a query on a given repository.
    *
@@ -23,8 +23,8 @@ public class QueryEngine extends QueryEngineHTTP implements QueryExecution {
    * @param  query
    *   the SPARQL query
    */
-  public QueryEngine(@NotNull final Repository repository,
-                     @NotNull final Query query) {
+  public DydraQueryEngine(@NotNull final Repository repository,
+                          @NotNull final Query query) {
     this(repository.name, query.toString());
   }
 
@@ -36,8 +36,8 @@ public class QueryEngine extends QueryEngineHTTP implements QueryExecution {
    * @param  query
    *   the SPARQL query string, e.g. "SELECT * WHERE {?s ?p ?o}"
    */
-  public QueryEngine(@NotNull final Repository repository,
-                     @NotNull final String queryString) {
+  public DydraQueryEngine(@NotNull final Repository repository,
+                          @NotNull final String queryString) {
     this(repository.name, queryString);
   }
 
@@ -49,8 +49,8 @@ public class QueryEngine extends QueryEngineHTTP implements QueryExecution {
    * @param  query
    *   the SPARQL query
    */
-  public QueryEngine(@NotNull final String repositoryName,
-                     @NotNull final Query query) {
+  public DydraQueryEngine(@NotNull final String repositoryName,
+                          @NotNull final Query query) {
     this(repositoryName, query.toString());
   }
 
@@ -62,8 +62,8 @@ public class QueryEngine extends QueryEngineHTTP implements QueryExecution {
    * @param  queryString
    *   the SPARQL query string, e.g. "SELECT * WHERE {?s ?p ?o}"
    */
-  public QueryEngine(@NotNull final String repositoryName,
-                     @NotNull final String queryString) {
+  public DydraQueryEngine(@NotNull final String repositoryName,
+                          @NotNull final String queryString) {
     super(Dydra.BASE_URL + repositoryName + "/sparql", queryString);
   }
 }
