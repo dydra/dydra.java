@@ -6,6 +6,14 @@ the cloud-hosted RDF & SPARQL database service.
 
 <https://github.com/dydra/dydra-java>
 
+Examples
+--------
+
+See [`doc/examples/raw-jena`][raw-jena] for examples on how to query Dydra's
+standard APIs using [Jena][]/[ARQ][], and [`doc/examples/sdk-jena`][sdk-jena]
+for simplified versions of the same based on the convenience wrappers
+provided as part of this SDK.
+
 Dependencies
 ------------
 
@@ -54,3 +62,7 @@ see <http://unlicense.org/> or the accompanying `UNLICENSE` file.
 [RDF]:        http://www.w3.org/RDF/
 [PDD]:        http://unlicense.org/#unlicensing-contributions
 [Dydra.com]:  http://dydra.com/
+[raw-jena]:   https://github.com/dydra/dydra-java/tree/master/doc/examples/raw-jena
+[sdk-jena]:   https://github.com/dydra/dydra-java/tree/master/doc/examples/sdk-jena
+[Jena]:       http://jena.sourceforge.net/
+[ARQ]:        http://jena.sourceforge.net/ARQ/
