@@ -4,6 +4,7 @@ package com.dydra.jena;
 
 import com.dydra.annotation.*;
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Node_Variable;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -36,6 +37,10 @@ public class DydraNTripleWriter extends NTripleWriter implements RDFWriter {
   public static String formatNode(@NotNull final Node node) {
     if (node == null)
       throw new NullPointerException("node cannot be null");
+
+    if (node instanceof Node_Variable) {
+      return node.toString(); // special case for variables
+    }
 
     final Model model = ModelFactory.createDefaultModel();
     try {

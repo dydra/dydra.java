@@ -9,6 +9,7 @@ import com.hp.hpl.jena.graph.Capabilities;
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.GraphStatisticsHandler;
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Node_Variable;
 import com.hp.hpl.jena.graph.TransactionHandler;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.TripleMatch;
@@ -193,25 +194,30 @@ public class DydraGraph extends GraphBase implements Graph {
     if (pattern == null)
       throw new NullPointerException("pattern cannot be null");
 
-    // TODO: create the CONSTRUCT query using the given pattern.
     final String query = (this.uri != null) ?
-      String.format("CONSTRUCT {?s ?p ?o} FROM <%s> WHERE {?s ?p ?o}", this.uri) :
-      "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}";
+      String.format("CONSTRUCT * FROM <%s> WHERE {%%s %%s %%s}", this.uri) :
+      "CONSTRUCT * WHERE {%s %s %s}";
 
-    return execConstruct(query).getGraph().find(pattern);
+    return execConstruct(query, pattern).getGraph().find(pattern);
   }
 
   protected boolean execAsk(@NotNull final String queryTemplate,
                             @NotNull final TripleMatch pattern) {
+    final Node s = pattern.getMatchSubject();
+    final Node p = pattern.getMatchPredicate();
+    final Node o = pattern.getMatchObject();
     return execAsk(queryTemplate,
-      pattern.getMatchSubject(),
-      pattern.getMatchPredicate(),
-      pattern.getMatchObject());
+      (s != null && s != Node.ANY) ? s : new Node_Variable("s"),
+      (p != null && p != Node.ANY) ? p : new Node_Variable("p"),
+      (o != null && o != Node.ANY) ? o : new Node_Variable("o"));
   }
 
   protected boolean execAsk(@NotNull final String queryTemplate,
                             final Node... nodes) {
-    final String queryString = DydraNTripleWriter.formatQuery(queryTemplate, nodes);
+    return execAsk(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
+  }
+
+  protected boolean execAsk(@NotNull final String queryString) {
     final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
       return queryExec.execAsk();
@@ -233,16 +239,23 @@ public class DydraGraph extends GraphBase implements Graph {
   @NotNull
   protected Model execConstruct(@NotNull final String queryTemplate,
                                 @NotNull final TripleMatch pattern) {
+    final Node s = pattern.getMatchSubject();
+    final Node p = pattern.getMatchPredicate();
+    final Node o = pattern.getMatchObject();
     return execConstruct(queryTemplate,
-      pattern.getMatchSubject(),
-      pattern.getMatchPredicate(),
-      pattern.getMatchObject());
+      (s != null && s != Node.ANY) ? s : new Node_Variable("s"),
+      (p != null && p != Node.ANY) ? p : new Node_Variable("p"),
+      (o != null && o != Node.ANY) ? o : new Node_Variable("o"));
   }
 
   @NotNull
   protected Model execConstruct(@NotNull final String queryTemplate,
                                 final Node... nodes) {
-    final String queryString = DydraNTripleWriter.formatQuery(queryTemplate, nodes);
+    return execConstruct(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
+  }
+
+  @NotNull
+  protected Model execConstruct(@NotNull final String queryString) {
     final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
       return queryExec.execConstruct();
