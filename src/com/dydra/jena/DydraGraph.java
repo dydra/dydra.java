@@ -202,19 +202,16 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   protected boolean execAsk(@NotNull final String queryTemplate,
-                            @NotNull final Triple triple) {
+                            @NotNull final TripleMatch pattern) {
     return execAsk(queryTemplate,
-      triple.getSubject(), triple.getPredicate(), triple.getObject());
+      pattern.getMatchSubject(),
+      pattern.getMatchPredicate(),
+      pattern.getMatchObject());
   }
 
   protected boolean execAsk(@NotNull final String queryTemplate,
                             final Node... nodes) {
-    final String[] args = new String[nodes.length];
-    for (int i = 0; i < nodes.length; i++) {
-      args[i] = DydraNTripleWriter.formatNode(nodes[i]);
-    }
-
-    final String queryString = String.format(queryTemplate, (Object[])args);
+    final String queryString = DydraNTripleWriter.formatQuery(queryTemplate, nodes);
     final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
       return queryExec.execAsk();
@@ -234,7 +231,18 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   @NotNull
-  protected Model execConstruct(@NotNull final String queryString) {
+  protected Model execConstruct(@NotNull final String queryTemplate,
+                                @NotNull final TripleMatch pattern) {
+    return execConstruct(queryTemplate,
+      pattern.getMatchSubject(),
+      pattern.getMatchPredicate(),
+      pattern.getMatchObject());
+  }
+
+  @NotNull
+  protected Model execConstruct(@NotNull final String queryTemplate,
+                                final Node... nodes) {
+    final String queryString = DydraNTripleWriter.formatQuery(queryTemplate, nodes);
     final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
       return queryExec.execConstruct();

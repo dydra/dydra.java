@@ -18,6 +18,21 @@ import java.io.StringWriter;
  */
 public class DydraNTripleWriter extends NTripleWriter implements RDFWriter {
   @NotNull
+  public static String formatQuery(@NotNull final String queryTemplate,
+                                   @Nullable final Node... nodes) {
+    if (nodes == null || nodes.length == 0) {
+      return queryTemplate;
+    }
+    else {
+      final String[] args = new String[nodes.length];
+      for (int i = 0; i < nodes.length; i++) {
+        args[i] = (nodes[i] != null) ? formatNode(nodes[i]) : "[]";
+      }
+      return String.format(queryTemplate, (Object[])args);
+    }
+  }
+
+  @NotNull
   public static String formatNode(@NotNull final Node node) {
     if (node == null)
       throw new NullPointerException("node cannot be null");
