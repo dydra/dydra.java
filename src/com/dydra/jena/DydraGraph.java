@@ -145,6 +145,7 @@ public class DydraGraph extends GraphBase implements Graph {
     final String query = (this.uri != null) ?
       String.format("ASK FROM <%s> WHERE {?s ?p ?o}", this.uri) :
       "ASK WHERE {?s ?p ?o}";
+
     return (execAsk(query) == false);
   }
 
@@ -158,7 +159,28 @@ public class DydraGraph extends GraphBase implements Graph {
     final String query = (this.uri != null) ?
       String.format("SELECT (COUNT(*) AS ?count) FROM <%s> WHERE {?s ?p ?o}", this.uri) :
       "SELECT (COUNT(*) AS ?count) WHERE {?s ?p ?o}";
+
     return (int)execCount(query);
+  }
+
+  /**
+   * @param  triple
+   * @return <code>true</code> if this graph contains the given triple
+   * @throws NullPointerException if <code>triple</code> is null
+   */
+  @Override
+  protected boolean graphBaseContains(@NotNull final Triple triple) {
+    if (triple == null)
+      throw new NullPointerException("triple cannot be null");
+
+    final String query = (this.uri != null) ?
+      String.format("ASK FROM <%s> WHERE {%%s %%s %%s}", this.uri) :
+      "ASK WHERE {%s %s %s}";
+
+    return execAsk(String.format(query,
+      DydraNTripleWriter.formatNode(triple.getSubject()),
+      DydraNTripleWriter.formatNode(triple.getPredicate()),
+      DydraNTripleWriter.formatNode(triple.getObject())));
   }
 
   /**
@@ -173,10 +195,11 @@ public class DydraGraph extends GraphBase implements Graph {
     if (pattern == null)
       throw new NullPointerException("pattern cannot be null");
 
-    // TODO: create the CONSTRUCT query from the given pattern.
+    // TODO: create the CONSTRUCT query using the given pattern.
     final String query = (this.uri != null) ?
       String.format("CONSTRUCT {?s ?p ?o} FROM <%s> WHERE {?s ?p ?o}", this.uri) :
       "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}";
+
     return execConstruct(query).getGraph().find(pattern);
   }
 
