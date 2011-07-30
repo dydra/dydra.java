@@ -4,7 +4,6 @@ package com.dydra.jena;
 
 import com.dydra.annotation.*;
 import com.hp.hpl.jena.graph.BulkUpdateHandler;
-import com.hp.hpl.jena.graph.impl.GraphWithPerform;
 import com.hp.hpl.jena.graph.impl.SimpleBulkUpdateHandler;
 
 /**
@@ -12,8 +11,18 @@ import com.hp.hpl.jena.graph.impl.SimpleBulkUpdateHandler;
  * @see http://openjena.org/javadoc/com/hp/hpl/jena/graph/BulkUpdateHandler.html
  */
 public class DydraBulkUpdateHandler extends SimpleBulkUpdateHandler implements BulkUpdateHandler {
-  public DydraBulkUpdateHandler(@NotNull final GraphWithPerform graph) {
+  protected final DydraGraph graph;
+
+  /**
+   * @throws NullPointerException if <code>graph</code> is null
+   */
+  public DydraBulkUpdateHandler(@NotNull final DydraGraph graph) {
     super(graph);
+
+    if (graph == null)
+      throw new NullPointerException("graph cannot be null");
+
+    this.graph = graph;
   }
 
   // TODO

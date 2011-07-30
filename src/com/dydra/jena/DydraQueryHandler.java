@@ -13,8 +13,18 @@ import com.hp.hpl.jena.graph.query.SimpleQueryHandler;
  * @see http://openjena.org/javadoc/com/hp/hpl/jena/graph/query/QueryHandler.html
  */
 public class DydraQueryHandler extends SimpleQueryHandler implements QueryHandler {
-  public DydraQueryHandler(@NotNull final Graph graph) {
+  protected final DydraGraph graph;
+
+  /**
+   * @throws NullPointerException if <code>graph</code> is null
+   */
+  public DydraQueryHandler(@NotNull final DydraGraph graph) {
     super(graph);
+
+    if (graph == null)
+      throw new NullPointerException("graph cannot be null");
+
+    this.graph = graph;
   }
 
   /**

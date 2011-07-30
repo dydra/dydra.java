@@ -11,6 +11,18 @@ import com.hp.hpl.jena.graph.Node;
  * @see http://openjena.org/javadoc/com/hp/hpl/jena/graph/GraphStatisticsHandler.html
  */
 public class DydraGraphStatisticsHandler implements GraphStatisticsHandler {
+  protected final DydraGraph graph;
+
+  /**
+   * @throws NullPointerException if <code>graph</code> is null
+   */
+  public DydraGraphStatisticsHandler(@NotNull final DydraGraph graph) {
+    if (graph == null)
+      throw new NullPointerException("graph cannot be null");
+
+    this.graph = graph;
+  }
+
   /**
    * Returns the number of statements that would match the given triple
    * pattern.
@@ -27,6 +39,6 @@ public class DydraGraphStatisticsHandler implements GraphStatisticsHandler {
   public long getStatistic(@Nullable final Node subject,
                            @Nullable final Node predicate,
                            @Nullable final Node object) {
-    return -1; // TODO
+    return -1; // TODO: perform a SELECT COUNT() query
   }
 }

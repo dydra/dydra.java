@@ -12,8 +12,18 @@ import com.hp.hpl.jena.shared.Command;
  * @see http://openjena.org/javadoc/com/hp/hpl/jena/graph/TransactionHandler.html
  */
 public class DydraTransactionHandler extends TransactionHandlerBase implements TransactionHandler {
-  public DydraTransactionHandler() {
+  protected final DydraGraph graph;
+
+  /**
+   * @throws NullPointerException if <code>graph</code> is null
+   */
+  public DydraTransactionHandler(@NotNull final DydraGraph graph) {
     super();
+
+    if (graph == null)
+      throw new NullPointerException("graph cannot be null");
+
+    this.graph = graph;
   }
 
   @Override
