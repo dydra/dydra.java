@@ -13,6 +13,9 @@ import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.TripleMatch;
 import com.hp.hpl.jena.graph.impl.GraphBase;
 import com.hp.hpl.jena.graph.query.QueryHandler;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.shared.PrefixMapping;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.util.iterator.NullIterator;
@@ -141,7 +144,7 @@ public class DydraGraph extends GraphBase implements Graph {
   public boolean isEmpty() {
     final String query = (this.uri != null) ?
       String.format("ASK FROM <%s> WHERE {?s ?p ?o}", this.uri) :
-      "ASK WHERE { ?s ?p ?o }";
+      "ASK WHERE {?s ?p ?o}";
     return (execAsk(query) == false);
   }
 
@@ -152,7 +155,10 @@ public class DydraGraph extends GraphBase implements Graph {
    */
   @Override
   protected int graphBaseSize() {
-    return super.graphBaseSize(); // TODO: perform a SELECT COUNT() query
+    final String query = (this.uri != null) ?
+      String.format("SELECT (COUNT(*) AS ?count) FROM <%s> WHERE {?s ?p ?o}", this.uri) :
+      "SELECT (COUNT(*) AS ?count) WHERE {?s ?p ?o}";
+    return (int)execCount(query);
   }
 
   /**
@@ -171,6 +177,21 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   protected boolean execAsk(@NotNull final String queryString) {
-    return this.repository.prepareQueryExecution(queryString).execAsk();
+    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+    try {
+      return qe.execAsk();
+    } finally { qe.close(); }
+  }
+
+  protected long execCount(@NotNull final String queryString) {
+    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+    try {
+      final ResultSet rs = qe.execSelect();
+      if (rs.hasNext()) {
+        final QuerySolution qs = rs.next();
+        return qs.get("count").asLiteral().getLong();
+      }
+      return 0;
+    } finally { qe.close(); }
   }
 }
