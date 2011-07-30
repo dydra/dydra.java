@@ -8,6 +8,7 @@ import com.hp.hpl.jena.graph.BulkUpdateHandler;
 import com.hp.hpl.jena.graph.Capabilities;
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.GraphStatisticsHandler;
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.TransactionHandler;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.TripleMatch;
@@ -177,10 +178,7 @@ public class DydraGraph extends GraphBase implements Graph {
       String.format("ASK FROM <%s> WHERE {%%s %%s %%s}", this.uri) :
       "ASK WHERE {%s %s %s}";
 
-    return execAsk(String.format(query,
-      DydraNTripleWriter.formatNode(triple.getSubject()),
-      DydraNTripleWriter.formatNode(triple.getPredicate()),
-      DydraNTripleWriter.formatNode(triple.getObject())));
+    return execAsk(query, triple);
   }
 
   /**
@@ -203,30 +201,43 @@ public class DydraGraph extends GraphBase implements Graph {
     return execConstruct(query).getGraph().find(pattern);
   }
 
-  protected boolean execAsk(@NotNull final String queryString) {
-    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+  protected boolean execAsk(@NotNull final String queryTemplate,
+                            @NotNull final Triple triple) {
+    return execAsk(queryTemplate,
+      triple.getSubject(), triple.getPredicate(), triple.getObject());
+  }
+
+  protected boolean execAsk(@NotNull final String queryTemplate,
+                            final Node... nodes) {
+    final String[] args = new String[nodes.length];
+    for (int i = 0; i < nodes.length; i++) {
+      args[i] = DydraNTripleWriter.formatNode(nodes[i]);
+    }
+
+    final String queryString = String.format(queryTemplate, (Object[])args);
+    final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
-      return qe.execAsk();
-    } finally { qe.close(); }
+      return queryExec.execAsk();
+    } finally { queryExec.close(); }
   }
 
   protected long execCount(@NotNull final String queryString) {
-    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+    final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
-      final ResultSet rs = qe.execSelect();
-      if (rs.hasNext()) {
-        final QuerySolution qs = rs.next();
-        return qs.get("count").asLiteral().getLong();
+      final ResultSet solutions = queryExec.execSelect();
+      if (solutions.hasNext()) {
+        final QuerySolution solution = solutions.next();
+        return solution.get("count").asLiteral().getLong();
       }
       return 0;
-    } finally { qe.close(); }
+    } finally { queryExec.close(); }
   }
 
   @NotNull
   protected Model execConstruct(@NotNull final String queryString) {
-    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+    final QueryExecution queryExec = this.repository.prepareQueryExecution(queryString);
     try {
-      return qe.execConstruct();
-    } finally { qe.close(); }
+      return queryExec.execConstruct();
+    } finally { queryExec.close(); }
   }
 }
