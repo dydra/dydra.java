@@ -16,9 +16,9 @@ import com.hp.hpl.jena.graph.query.QueryHandler;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.PrefixMapping;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-import com.hp.hpl.jena.util.iterator.NullIterator;
 
 /**
  * @see http://docs.dydra.com/sdk/java/jena
@@ -173,7 +173,11 @@ public class DydraGraph extends GraphBase implements Graph {
     if (pattern == null)
       throw new NullPointerException("pattern cannot be null");
 
-    return new NullIterator<Triple>(); // TODO: perform a CONSTRUCT query
+    // TODO: create the CONSTRUCT query from the given pattern.
+    final String query = (this.uri != null) ?
+      String.format("CONSTRUCT {?s ?p ?o} FROM <%s> WHERE {?s ?p ?o}", this.uri) :
+      "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}";
+    return execConstruct(query).getGraph().find(pattern);
   }
 
   protected boolean execAsk(@NotNull final String queryString) {
@@ -192,6 +196,14 @@ public class DydraGraph extends GraphBase implements Graph {
         return qs.get("count").asLiteral().getLong();
       }
       return 0;
+    } finally { qe.close(); }
+  }
+
+  @NotNull
+  protected Model execConstruct(@NotNull final String queryString) {
+    final QueryExecution qe = this.repository.prepareQueryExecution(queryString);
+    try {
+      return qe.execConstruct();
     } finally { qe.close(); }
   }
 }
