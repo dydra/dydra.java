@@ -139,7 +139,10 @@ public class DydraGraph extends GraphBase implements Graph {
    */
   @Override
   public boolean isEmpty() {
-    return this.graphBaseSize() == 0; // TODO: perform an ASK query
+    final String query = (this.uri != null) ?
+      String.format("ASK FROM <%s> WHERE {?s ?p ?o}", this.uri) :
+      "ASK WHERE { ?s ?p ?o }";
+    return (execAsk(query) == false);
   }
 
   /**
@@ -165,5 +168,9 @@ public class DydraGraph extends GraphBase implements Graph {
       throw new NullPointerException("pattern cannot be null");
 
     return new NullIterator<Triple>(); // TODO: perform a CONSTRUCT query
+  }
+
+  protected boolean execAsk(@NotNull final String queryString) {
+    return this.repository.prepareQueryExecution(queryString).execAsk();
   }
 }
