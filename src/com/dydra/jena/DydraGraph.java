@@ -2,6 +2,7 @@
 
 package com.dydra.jena;
 
+import com.dydra.Repository;
 import com.dydra.annotation.*;
 import com.hp.hpl.jena.graph.BulkUpdateHandler;
 import com.hp.hpl.jena.graph.Capabilities;
@@ -21,8 +22,29 @@ import com.hp.hpl.jena.util.iterator.NullIterator;
  * @see http://openjena.org/javadoc/com/hp/hpl/jena/graph/Graph.html
  */
 public class DydraGraph extends GraphBase implements Graph {
-  public DydraGraph() {
-    super(); // FIXME
+  protected final Repository repository;
+  protected final String uri;
+
+  /**
+   * @param  repository
+   * @throws NullPointerException if <code>repository</code> is null
+   */
+  public DydraGraph(@NotNull final Repository repository) {
+    this(repository, null);
+  }
+
+  /**
+   * @param  repository
+   * @param  uri
+   * @throws NullPointerException if <code>repository</code> is null
+   */
+  public DydraGraph(@NotNull final Repository repository,
+                    @Nullable final String uri) {
+    if (repository == null)
+      throw new NullPointerException("repository cannot be null");
+
+    this.repository = repository;
+    this.uri        = uri;
   }
 
   /**
@@ -142,6 +164,6 @@ public class DydraGraph extends GraphBase implements Graph {
     if (pattern == null)
       throw new NullPointerException("pattern cannot be null");
 
-    return new NullIterator<Triple>(); // TODO
+    return new NullIterator<Triple>(); // TODO: perform a CONSTRUCT query
   }
 }
