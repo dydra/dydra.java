@@ -37,7 +37,7 @@ public class DydraGraphStatisticsHandler implements GraphStatisticsHandler {
   public long getStatistic(@Nullable final Node subject,
                            @Nullable final Node predicate,
                            @Nullable final Node object) {
-    final String query = (this.graph.getURI() != null) ?
+    final String query = this.graph.isNamed() ?
       String.format("SELECT (COUNT(*) AS ?count) FROM <%s> WHERE {%%s %%s %%s}",
         this.graph.getURI()) :
       "SELECT (COUNT(*) AS ?count) WHERE {%s %s %s}";

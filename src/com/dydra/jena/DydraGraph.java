@@ -69,6 +69,13 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   /**
+   * @return <code>true</code> if this graph is identified by a URI
+   */
+  public boolean isNamed() {
+    return (this.uri != null);
+  }
+
+  /**
    * @return the query handler instance for this graph
    */
   @Override @NotNull
@@ -160,7 +167,7 @@ public class DydraGraph extends GraphBase implements Graph {
    */
   @Override
   public boolean isEmpty() {
-    final String query = (this.uri != null) ?
+    final String query = isNamed() ?
       String.format("ASK FROM <%s> WHERE {?s ?p ?o}", this.uri) :
       "ASK WHERE {?s ?p ?o}";
 
@@ -174,7 +181,7 @@ public class DydraGraph extends GraphBase implements Graph {
    */
   @Override
   protected int graphBaseSize() {
-    final String query = (this.uri != null) ?
+    final String query = isNamed() ?
       String.format("SELECT (COUNT(*) AS ?count) FROM <%s> WHERE {?s ?p ?o}", this.uri) :
       "SELECT (COUNT(*) AS ?count) WHERE {?s ?p ?o}";
 
@@ -191,7 +198,7 @@ public class DydraGraph extends GraphBase implements Graph {
     if (triple == null)
       throw new NullPointerException("triple cannot be null");
 
-    final String query = (this.uri != null) ?
+    final String query = isNamed() ?
       String.format("ASK FROM <%s> WHERE {%%s %%s %%s}", this.uri) :
       "ASK WHERE {%s %s %s}";
 
@@ -210,7 +217,7 @@ public class DydraGraph extends GraphBase implements Graph {
     if (pattern == null)
       throw new NullPointerException("pattern cannot be null");
 
-    final String query = (this.uri != null) ?
+    final String query = isNamed() ?
       String.format("CONSTRUCT * FROM <%s> WHERE {%%s %%s %%s}", this.uri) :
       "CONSTRUCT * WHERE {%s %s %s}";
 
