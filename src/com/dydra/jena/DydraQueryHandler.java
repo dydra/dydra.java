@@ -42,15 +42,30 @@ public class DydraQueryHandler extends SimpleQueryHandler implements QueryHandle
     if (node.isLiteral()) {
       return this.graph.contains(Node.ANY, Node.ANY, node);
     }
+
     if (node.isBlank()) {
-      return this.graph.contains(node, Node.ANY, Node.ANY) ||
-             this.graph.contains(Node.ANY, Node.ANY, node);
+      final String query = !this.graph.isNamed() ?
+        "ASK WHERE {%s UNION %s}" :
+        String.format("ASK FROM <%s> WHERE {%%s UNION %%s}",
+          this.graph.getURI());
+
+      return this.graph.execAsk(String.format(query,
+        DydraNTripleWriter.formatQuery("{%s ?p ?o}", node),
+        DydraNTripleWriter.formatQuery("{?s ?p %s}", node)));
     }
+
     if (node.isURI()) {
-      return this.graph.contains(node, Node.ANY, Node.ANY) ||
-             this.graph.contains(Node.ANY, node, Node.ANY) ||
-             this.graph.contains(Node.ANY, Node.ANY, node);
+      final String query = !this.graph.isNamed() ?
+        "ASK WHERE {%s UNION %s UNION %s}" :
+        String.format("ASK FROM <%s> WHERE {%%s UNION %%s UNION %%s}",
+          this.graph.getURI());
+
+      return this.graph.execAsk(String.format(query,
+        DydraNTripleWriter.formatQuery("{%s ?p ?o}", node),
+        DydraNTripleWriter.formatQuery("{?s %s ?o}", node),
+        DydraNTripleWriter.formatQuery("{?s ?p %s}", node)));
     }
+
     return false;
   }
 }
