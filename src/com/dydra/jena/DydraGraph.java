@@ -53,6 +53,22 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   /**
+   * @return the Dydra repository this graph belongs to
+   */
+  @NotNull
+  public Repository getRepository() {
+    return this.repository;
+  }
+
+  /**
+   * @return the URI string identifying this graph
+   */
+  @Nullable
+  public String getURI() {
+    return this.uri;
+  }
+
+  /**
    * @return the query handler instance for this graph
    */
   @Override @NotNull
