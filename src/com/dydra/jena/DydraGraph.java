@@ -229,7 +229,7 @@ public class DydraGraph extends GraphBase implements Graph {
   }
 
   protected boolean execAsk(@NotNull final String queryTemplate,
-                            final Node... nodes) {
+                            @Nullable final Node... nodes) {
     return execAsk(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
   }
 
@@ -238,6 +238,11 @@ public class DydraGraph extends GraphBase implements Graph {
     try {
       return queryExec.execAsk();
     } finally { queryExec.close(); }
+  }
+
+  protected long execCount(@NotNull final String queryTemplate,
+                           @Nullable final Node... nodes) {
+    return execCount(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
   }
 
   protected long execCount(@NotNull final String queryString) {
@@ -266,7 +271,7 @@ public class DydraGraph extends GraphBase implements Graph {
 
   @NotNull
   protected Model execConstruct(@NotNull final String queryTemplate,
-                                final Node... nodes) {
+                                @Nullable final Node... nodes) {
     return execConstruct(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
   }
 
