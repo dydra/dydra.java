@@ -39,6 +39,18 @@ public class DydraQueryHandler extends SimpleQueryHandler implements QueryHandle
     if (node == null)
       throw new NullPointerException("node cannot be null");
 
-    return super.containsNode(node); // TODO: perform an ASK query
+    if (node.isLiteral()) {
+      return this.graph.contains(Node.ANY, Node.ANY, node);
+    }
+    if (node.isBlank()) {
+      return this.graph.contains(node, Node.ANY, Node.ANY) ||
+             this.graph.contains(Node.ANY, Node.ANY, node);
+    }
+    if (node.isURI()) {
+      return this.graph.contains(node, Node.ANY, Node.ANY) ||
+             this.graph.contains(Node.ANY, node, Node.ANY) ||
+             this.graph.contains(Node.ANY, Node.ANY, node);
+    }
+    return false;
   }
 }
