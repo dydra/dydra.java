@@ -3,8 +3,12 @@
 package com.dydra;
 
 import com.dydra.annotation.*;
+import com.dydra.jena.DydraNTripleWriter;
 import com.dydra.jena.DydraQueryExecutionFactory;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Node_Variable;
 import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.graph.TripleMatch;
 
 /**
  * Represents a Dydra.com RDF repository.
@@ -82,6 +86,52 @@ public class Repository extends Resource {
 
     // TODO: call the dydra.repository.import RPC method
     throw new UnsupportedOperationException("not implemented");
+  }
+
+  /**
+   * Prepares to execute the given SPARQL query on this repository.
+   *
+   * Note: this is a Jena-specific method.
+   *
+   * @param  queryTemplate
+   *   the SPARQL query template, e.g. "SELECT * WHERE {%s %s %s} LIMIT 10"
+   * @param  triplePattern
+   */
+  @NotNull
+  public QueryExecution prepareQueryExecution(@NotNull final String queryTemplate,
+                                              @NotNull final TripleMatch triplePattern) {
+    if (queryTemplate == null)
+      throw new NullPointerException("queryTemplate cannot be null");
+    if (triplePattern == null)
+      throw new NullPointerException("triplePattern cannot be null");
+
+    final Node s = triplePattern.getMatchSubject();
+    final Node p = triplePattern.getMatchPredicate();
+    final Node o = triplePattern.getMatchObject();
+
+    final String queryString = DydraNTripleWriter.formatQuery(queryTemplate,
+      (s != null && s != Node.ANY) ? s : new Node_Variable("s"),
+      (p != null && p != Node.ANY) ? p : new Node_Variable("p"),
+      (o != null && o != Node.ANY) ? o : new Node_Variable("o"));
+
+    return prepareQueryExecution(queryString);
+  }
+
+  /**
+   * Prepares to execute the given SPARQL query on this repository.
+   *
+   * Note: this is a Jena-specific method.
+   *
+   * @param  queryTemplate
+   *   the SPARQL query template, e.g. "SELECT * WHERE {%s ?p ?o} LIMIT 10"
+   */
+  @NotNull
+  public QueryExecution prepareQueryExecution(@NotNull final String queryTemplate,
+                                              @Nullable final Node... nodes) {
+    if (queryTemplate == null)
+      throw new NullPointerException("queryTemplate cannot be null");
+
+    return prepareQueryExecution(DydraNTripleWriter.formatQuery(queryTemplate, nodes));
   }
 
   /**
