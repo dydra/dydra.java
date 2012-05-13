@@ -408,5 +408,27 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>datagraph.releases</id>
+      <name>Datagraph (Releases)</name>
+      <url>http://mvn.datagraph.org/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>datagraph.snapshots</id>
+      <name>Datagraph (Snapshots)</name>
+      <url>http://mvn.datagraph.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 </project>
