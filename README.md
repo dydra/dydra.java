@@ -58,7 +58,6 @@ see <http://unlicense.org/> or the accompanying `UNLICENSE` file.
 
 [Java]:       http://java.com/
 [Maven]:      http://maven.apache.org/
-[Buildr]:     http://buildr.apache.org/
 [RDF]:        http://www.w3.org/RDF/
 [PDD]:        http://unlicense.org/#unlicensing-contributions
 [Dydra.com]:  http://dydra.com/
