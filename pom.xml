@@ -174,6 +174,10 @@
                 <url>http://jena.apache.org/documentation/javadoc/arq/</url>
                 <location>${basedir}/doc/javadoc/arq/</location>
               </offlineLink>
+              <offlineLink>
+                <url>http://kentbeck.github.com/junit/javadoc/4.10/</url>
+                <location>${basedir}/doc/javadoc/junit/</location>
+              </offlineLink>
             </offlineLinks>
           </configuration>
         </plugin>
