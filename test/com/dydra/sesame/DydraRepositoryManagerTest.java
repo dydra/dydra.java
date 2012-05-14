@@ -42,12 +42,14 @@ public class DydraRepositoryManagerTest {
   }
 
   @Test
-  public void testInitialize() throws RepositoryException {
+  public void testInitialize()
+      throws RepositoryException {
     //manager.initialize();
   }
 
   @Test
-  public void testGetAllRepositoryInfos() throws RepositoryException {
+  public void testGetAllRepositoryInfos()
+      throws RepositoryException {
     final Collection<RepositoryInfo> infos = manager.getAllRepositoryInfos(true);
     assertNotNull(infos);
     assertFalse(infos.isEmpty());
@@ -60,7 +62,8 @@ public class DydraRepositoryManagerTest {
   }
 
   @Test
-  public void testGetRepositoryIDs() throws RepositoryException {
+  public void testGetRepositoryIDs()
+      throws RepositoryException {
     final Set<String> repositoryIDs = manager.getRepositoryIDs();
     assertNotNull(repositoryIDs);
     assertFalse(repositoryIDs.isEmpty());
@@ -69,7 +72,8 @@ public class DydraRepositoryManagerTest {
   }
 
   @Test
-  public void testGetRepositoryInfo() throws RepositoryException {
+  public void testGetRepositoryInfo()
+      throws RepositoryException {
     final RepositoryInfo info = manager.getRepositoryInfo(this.repositoryName);
     assertNotNull(info);
     assertEquals(this.repositoryName, info.getId());
@@ -89,8 +93,11 @@ public class DydraRepositoryManagerTest {
   }
 
   @Test
-  public void testHasRepositoryConfig() {
-    //assertTrue(manager.hasRepositoryConfig(this.repositoryName));
+  public void testHasRepositoryConfig()
+      throws RepositoryException, RepositoryConfigException {
+    assertTrue(manager.hasRepositoryConfig(SystemRepository.ID));
+    assertTrue(manager.hasRepositoryConfig(this.repositoryName));
+    assertFalse(manager.hasRepositoryConfig(UUID.randomUUID().toString()));
   }
 
   @Test
