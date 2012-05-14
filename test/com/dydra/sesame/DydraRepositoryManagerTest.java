@@ -12,11 +12,20 @@ public class DydraRepositoryManagerTest {
     org.junit.runner.JUnitCore.main(DydraRepositoryManagerTest.class.getName());
   }
 
+  private Properties properties;
+  private String accountName;
+  private String password;
+  private String serverURL;
   private DydraRepositoryManager manager;
 
   @Before
   public void setUp() {
-    this.manager = new DydraRepositoryManager("jhacker");
+    this.properties  = System.getProperties();
+    this.accountName = properties.getProperty("com.dydra.sesame.account", "jhacker");
+    this.password    = properties.getProperty("com.dydra.sesame.password", null);
+    this.serverURL   = properties.getProperty("com.dydra.sesame.url",
+      "http://api.dydra.com/sesame2") + "/" + this.accountName + "/";
+    this.manager     = new DydraRepositoryManager(accountName);
   }
 
   @After
@@ -31,7 +40,15 @@ public class DydraRepositoryManagerTest {
 
   @Test
   public void testGetServerURL() {
-    assertEquals("http://api.dydra.com/sesame2/jhacker/", this.manager.getServerURL());
+    assertEquals(serverURL, manager.getServerURL());
+  }
+
+  @Test
+  public void testSetPassword() {
+    if (this.password != null) {
+      manager.setPassword(this.password);
+    }
+    manager.setPassword(null);
   }
 
   @Test
