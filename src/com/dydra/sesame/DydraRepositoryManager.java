@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.manager.RepositoryManager;
+import org.openrdf.repository.manager.RepositoryInfo;
 
 /**
  * A manager for repositories hosted on Dydra.
@@ -40,12 +41,23 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
     this.accountName = accountName;
   }
 
-  public void setPassword(@Nullable final String password) {
-    this.isAuthenticated = (password != null);
-    this.setUsernameAndPassword(this.isAuthenticated ? this.accountName : null, password);
-  }
-
   public boolean isAuthenticated() {
     return this.isAuthenticated;
+  }
+
+  public void setPassword(@Nullable final String password) {
+    this.setUsernameAndPassword(this.accountName, password);
+  }
+
+  @Override
+  public void setUsernameAndPassword(@Nullable final String userName,
+                                     @Nullable final String password) {
+    this.isAuthenticated = (password != null);
+    if (this.isAuthenticated) {
+      super.setUsernameAndPassword(userName, password);
+    }
+    else {
+      super.setUsernameAndPassword(null, null);
+    }
   }
 }
