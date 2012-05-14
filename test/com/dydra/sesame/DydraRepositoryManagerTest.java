@@ -154,4 +154,9 @@ public class DydraRepositoryManagerTest {
     manager.setUsernameAndPassword(this.accountName, null);
     assertFalse(manager.isAuthenticated());
   }
+
+  @Test
+  public void testShutDown() {
+    manager.shutDown();
+  }
 }

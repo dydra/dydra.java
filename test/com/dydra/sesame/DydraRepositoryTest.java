@@ -5,7 +5,9 @@ package com.dydra.sesame;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import java.io.File;
 import java.util.*;
+import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -42,13 +44,35 @@ public class DydraRepositoryTest {
   }
 
   @Test
+  public void testDataDir() {
+    assertNull(repository.getDataDir());
+    final File tempDir = new File(System.getProperty("java.io.tmpdir", "/tmp"));
+    repository.setDataDir(tempDir);
+    assertNotNull(repository.getDataDir());
+    assertEquals(tempDir, repository.getDataDir());
+    repository.setDataDir(null);
+    assertNull(repository.getDataDir());
+  }
+
+  @Test
   public void testGetConnection() throws RepositoryException {
     final RepositoryConnection connection = repository.getConnection();
     assertNotNull(connection);
   }
 
   @Test
+  public void testGetValueFactory() {
+    final ValueFactory factory = repository.getValueFactory();
+    assertNotNull(factory);
+  }
+
+  @Test
   public void testIsWritable() throws RepositoryException {
     assertTrue(repository.isWritable());
+  }
+
+  @Test
+  public void testShutDown() throws RepositoryException {
+    repository.shutDown();
   }
 }
