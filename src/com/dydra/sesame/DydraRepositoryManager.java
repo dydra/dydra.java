@@ -21,7 +21,8 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
   public static final String SERVER_BASE_URL_PROPERTY = "com.dydra.sesame.url";
   public static final String SERVER_BASE_URL = "http://api.dydra.com/sesame2";
 
-  private final String accountName;
+  protected final String accountName;
+  protected boolean isAuthenticated;
 
   public DydraRepositoryManager(@NotNull final String accountName) {
     this(accountName, System.getProperty(SERVER_BASE_URL_PROPERTY, SERVER_BASE_URL));
@@ -40,6 +41,11 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
   }
 
   public void setPassword(@Nullable final String password) {
-    this.setUsernameAndPassword((password != null) ? this.accountName : null, password);
+    this.isAuthenticated = (password != null);
+    this.setUsernameAndPassword(this.isAuthenticated ? this.accountName : null, password);
+  }
+
+  public boolean isAuthenticated() {
+    return this.isAuthenticated;
   }
 }

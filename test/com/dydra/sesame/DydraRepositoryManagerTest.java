@@ -45,10 +45,13 @@ public class DydraRepositoryManagerTest {
 
   @Test
   public void testSetPassword() {
+    assertFalse(manager.isAuthenticated());
     if (this.password != null) {
       manager.setPassword(this.password);
+      assertTrue(manager.isAuthenticated());
     }
     manager.setPassword(null);
+    assertFalse(manager.isAuthenticated());
   }
 
   @Test
