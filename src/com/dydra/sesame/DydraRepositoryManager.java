@@ -5,8 +5,12 @@ package com.dydra.sesame;
 import com.dydra.annotation.*;
 import com.dydra.Dydra;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Properties;
+import java.util.Set;
 
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.manager.RepositoryManager;
 import org.openrdf.repository.manager.RepositoryInfo;
@@ -59,5 +63,15 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
     else {
       super.setUsernameAndPassword(null, null);
     }
+  }
+
+  @Override @NotNull
+  public Set<String> getRepositoryIDs() throws RepositoryException {
+    final Collection<RepositoryInfo> infos = this.getAllRepositoryInfos(false);
+    final Set<String> result = new LinkedHashSet<String>(infos.size());
+    for (final RepositoryInfo info : infos) {
+      result.add(info.getId());
+    }
+    return result;
   }
 }
