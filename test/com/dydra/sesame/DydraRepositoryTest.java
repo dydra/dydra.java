@@ -32,7 +32,7 @@ public class DydraRepositoryTest {
     this.serverURL      = properties.getProperty("com.dydra.sesame.url",
       "http://api.dydra.com/sesame2") + "/" + this.accountName + "/";
     this.repositoryURL  = this.serverURL + "repositories/" + this.repositoryName;
-    this.repository     = new DydraRepository(this.repositoryURL);
+    this.repository     = new DydraRepository(this.serverURL, this.repositoryName);
     this.repository.initialize();
   }
 
@@ -45,5 +45,10 @@ public class DydraRepositoryTest {
   public void testGetConnection() throws RepositoryException {
     final RepositoryConnection connection = repository.getConnection();
     assertNotNull(connection);
+  }
+
+  @Test
+  public void testIsWritable() throws RepositoryException {
+    assertTrue(repository.isWritable());
   }
 }
