@@ -69,6 +69,7 @@ public class DydraRepositoryManagerTest {
       throws RepositoryException, RepositoryConfigException {
     final Repository repository = manager.getRepository(this.repositoryName);
     assertNotNull(repository);
+    assertSame(repository, manager.getRepository(this.repositoryName));
     assertNull(manager.getRepository(UUID.randomUUID().toString()));
   }
 
@@ -106,6 +107,13 @@ public class DydraRepositoryManagerTest {
   @Test
   public void testGetServerURL() {
     assertEquals(serverURL, manager.getServerURL());
+  }
+
+  @Test
+  public void testGetSystemRepository() {
+    final Repository repository = manager.getSystemRepository();
+    assertNotNull(repository);
+    assertSame(repository, manager.getSystemRepository());
   }
 
   @Test

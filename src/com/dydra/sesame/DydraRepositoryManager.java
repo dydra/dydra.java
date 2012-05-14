@@ -17,6 +17,7 @@ import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.manager.RepositoryManager;
 import org.openrdf.repository.manager.RepositoryInfo;
+import org.openrdf.repository.manager.SystemRepository;
 
 /**
  * A manager for repositories hosted on Dydra.
@@ -94,12 +95,21 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
   }
 
   @Override @Nullable
+  protected Repository createSystemRepository()
+      throws RepositoryException {
+    DydraRepository repository = new DydraRepository(this.getServerURL(), SystemRepository.ID);
+    //repository.setUsernameAndPassword(this.username, this.password); // FIXME
+    repository.initialize();
+    return repository;
+  }
+
+  @Override @Nullable
   protected Repository createRepository(@NotNull final String repositoryID)
       throws RepositoryException, RepositoryConfigException {
     DydraRepository repository = null;
     if (this.hasRepositoryConfig(repositoryID)) {
       repository = new DydraRepository(this.getServerURL(), repositoryID);
-      //repository.setUsernameAndPassword(username, password); // FIXME
+      //repository.setUsernameAndPassword(this.username, this.password); // FIXME
       repository.initialize();
     }
     return repository;
