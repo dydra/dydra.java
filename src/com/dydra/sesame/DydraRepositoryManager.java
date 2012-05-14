@@ -2,6 +2,9 @@
 
 package com.dydra.sesame;
 
+import com.dydra.annotation.*;
+import com.dydra.Dydra;
+
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.manager.RepositoryManager;
 
@@ -13,7 +16,15 @@ import org.openrdf.repository.manager.RepositoryManager;
  * org.openrdf.repository.manager.LocalRepositoryManager} class.
  */
 public class DydraRepositoryManager extends RemoteRepositoryManager {
-  public DydraRepositoryManager(final String serverURL) {
-    super(serverURL);
+  public static final String SERVER_BASE_URL_PROPERTY = "com.dydra.sesame.url";
+  public static final String SERVER_BASE_URL = "http://api.dydra.com/sesame2";
+
+  public DydraRepositoryManager(@NotNull final String accountName) {
+    this(accountName, System.getProperty(SERVER_BASE_URL_PROPERTY, SERVER_BASE_URL));
+  }
+
+  public DydraRepositoryManager(@NotNull final String accountName,
+                                @NotNull final String serverBaseURL) {
+    super(serverBaseURL + "/" + accountName + "/");
   }
 }
