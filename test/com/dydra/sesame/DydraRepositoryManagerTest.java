@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.*;
 import java.util.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryReadOnlyException;
 import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.manager.RepositoryInfo;
@@ -44,10 +45,10 @@ public class DydraRepositoryManagerTest {
     this.manager = null;
   }
 
-  @Test
-  public void testInitialize()
-      throws RepositoryException {
-    //manager.initialize();
+  @Test(expected=RepositoryReadOnlyException.class)
+  public void testAddRepositoryConfig()
+      throws RepositoryException, RepositoryConfigException {
+    manager.addRepositoryConfig(new RepositoryConfig(this.repositoryName));
   }
 
   @Test
@@ -61,7 +62,9 @@ public class DydraRepositoryManagerTest {
   @Test
   public void testGetNewRepositoryID()
       throws RepositoryException, RepositoryConfigException {
-    //System.out.println(manager.getNewRepositoryID(this.repositoryName));
+    final String repositoryID = manager.getNewRepositoryID(this.repositoryName);
+    assertNotNull(repositoryID);
+    assertFalse(repositoryID.equals(this.repositoryName));
   }
 
   @Test
@@ -122,6 +125,12 @@ public class DydraRepositoryManagerTest {
     assertTrue(manager.hasRepositoryConfig(SystemRepository.ID));
     assertTrue(manager.hasRepositoryConfig(this.repositoryName));
     assertFalse(manager.hasRepositoryConfig(UUID.randomUUID().toString()));
+  }
+
+  @Test(expected=RepositoryReadOnlyException.class)
+  public void testRemoveRepositoryConfig()
+      throws RepositoryException, RepositoryConfigException {
+    manager.removeRepositoryConfig(this.repositoryName);
   }
 
   @Test

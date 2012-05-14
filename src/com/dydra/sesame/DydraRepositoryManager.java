@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryReadOnlyException;
 import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.manager.RemoteRepositoryManager;
@@ -113,5 +114,29 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
       repository.initialize();
     }
     return repository;
+  }
+
+  /**
+   * @throws RepositoryReadOnlyException
+   */
+  @Override
+  public void addRepositoryConfig(@NotNull final RepositoryConfig config)
+      throws RepositoryException, RepositoryConfigException {
+    failSystemRepositoryWrite();
+  }
+
+  /**
+   * @throws RepositoryReadOnlyException
+   */
+  @Override
+  public boolean removeRepositoryConfig(@NotNull final String repositoryID)
+      throws RepositoryException, RepositoryConfigException {
+    failSystemRepositoryWrite();
+    return false; /* never reached */
+  }
+
+  protected void failSystemRepositoryWrite()
+      throws RepositoryReadOnlyException {
+    throw new RepositoryReadOnlyException(SystemRepository.ID + " repository is not writable");
   }
 }
