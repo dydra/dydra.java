@@ -18,4 +18,10 @@ public class DydraRepository extends HTTPRepository implements Repository {
   public DydraRepository(@NotNull final String repositoryURL) {
     super(repositoryURL);
   }
+
+  @Override @NotNull
+  public RepositoryConnection getConnection()
+      throws RepositoryException {
+    return super.getConnection(); // TODO
+  }
 }

@@ -15,11 +15,25 @@ public class DydraRepositoryTest {
     org.junit.runner.JUnitCore.main(DydraRepositoryTest.class.getName());
   }
 
+  private Properties properties;
+  private String accountName;
+  private String password;
+  private String repositoryName;
+  private String serverURL;
+  private String repositoryURL;
   private DydraRepository repository;
 
   @Before
-  public void setUp() {
-    this.repository = null; // TODO
+  public void setUp() throws RepositoryException {
+    this.properties     = System.getProperties();
+    this.accountName    = properties.getProperty("com.dydra.sesame.account", "jhacker");
+    this.password       = properties.getProperty("com.dydra.sesame.password", null);
+    this.repositoryName = properties.getProperty("com.dydra.sesame.repository", "test");
+    this.serverURL      = properties.getProperty("com.dydra.sesame.url",
+      "http://api.dydra.com/sesame2") + "/" + this.accountName + "/";
+    this.repositoryURL  = this.serverURL + "repositories/" + this.repositoryName;
+    this.repository     = new DydraRepository(this.repositoryURL);
+    this.repository.initialize();
   }
 
   @After
@@ -28,7 +42,8 @@ public class DydraRepositoryTest {
   }
 
   @Test
-  public void test() throws RepositoryException {
-    // TODO
+  public void testGetConnection() throws RepositoryException {
+    final RepositoryConnection connection = repository.getConnection();
+    assertNotNull(connection);
   }
 }
