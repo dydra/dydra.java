@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import java.util.*;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.manager.RepositoryInfo;
 import org.openrdf.repository.manager.SystemRepository;
@@ -83,8 +84,13 @@ public class DydraRepositoryManagerTest {
   }
 
   @Test
-  public void testGetRepositoryConfig() {
-    // TODO
+  public void testGetRepositoryConfig()
+      throws RepositoryException, RepositoryConfigException {
+    final RepositoryConfig config = manager.getRepositoryConfig(this.repositoryName);
+    assertNotNull(config);
+    assertNotNull(config.getID());
+    assertNotNull(config.getTitle());
+    assertNull(manager.getRepositoryConfig(UUID.randomUUID().toString()));
   }
 
   @Test

@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.manager.RemoteRepositoryManager;
 import org.openrdf.repository.manager.RepositoryManager;
@@ -81,5 +82,13 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
   public boolean hasRepositoryConfig(@NotNull final String repositoryID)
       throws RepositoryException, RepositoryConfigException {
     return this.getRepositoryIDs().contains(repositoryID);
+  }
+
+  @Override @Nullable
+  public RepositoryConfig getRepositoryConfig(@NotNull final String repositoryID)
+      throws RepositoryException, RepositoryConfigException {
+    final RepositoryInfo repositoryInfo = this.getRepositoryInfo(repositoryID);
+    return (repositoryInfo == null) ? null :
+      new RepositoryConfig(repositoryID, repositoryInfo.getDescription());
   }
 }
