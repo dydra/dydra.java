@@ -10,6 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
@@ -90,5 +91,17 @@ public class DydraRepositoryManager extends RemoteRepositoryManager {
     final RepositoryInfo repositoryInfo = this.getRepositoryInfo(repositoryID);
     return (repositoryInfo == null) ? null :
       new RepositoryConfig(repositoryID, repositoryInfo.getDescription());
+  }
+
+  @Override @Nullable
+  protected Repository createRepository(@NotNull final String repositoryID)
+      throws RepositoryException, RepositoryConfigException {
+    DydraRepository repository = null;
+    if (this.hasRepositoryConfig(repositoryID)) {
+      repository = new DydraRepository(this.getServerURL(), repositoryID);
+      //repository.setUsernameAndPassword(username, password); // FIXME
+      repository.initialize();
+    }
+    return repository;
   }
 }

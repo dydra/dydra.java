@@ -6,6 +6,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import java.util.*;
+import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
@@ -26,7 +27,7 @@ public class DydraRepositoryManagerTest {
   private DydraRepositoryManager manager;
 
   @Before
-  public void setUp() {
+  public void setUp() throws RepositoryException {
     this.properties     = System.getProperties();
     this.accountName    = properties.getProperty("com.dydra.sesame.account", "jhacker");
     this.password       = properties.getProperty("com.dydra.sesame.password", null);
@@ -35,6 +36,7 @@ public class DydraRepositoryManagerTest {
       "http://api.dydra.com/sesame2") + "/" + this.accountName + "/";
     this.repositoryURL  = this.serverURL + "repositories/" + this.repositoryName;
     this.manager        = new DydraRepositoryManager(accountName);
+    this.manager.initialize();
   }
 
   @After
@@ -60,6 +62,14 @@ public class DydraRepositoryManagerTest {
   public void testGetNewRepositoryID()
       throws RepositoryException, RepositoryConfigException {
     //System.out.println(manager.getNewRepositoryID(this.repositoryName));
+  }
+
+  @Test
+  public void testGetRepository()
+      throws RepositoryException, RepositoryConfigException {
+    final Repository repository = manager.getRepository(this.repositoryName);
+    assertNotNull(repository);
+    assertNull(manager.getRepository(UUID.randomUUID().toString()));
   }
 
   @Test
