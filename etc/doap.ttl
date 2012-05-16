@@ -1,0 +1,43 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<http://sdk.dydra.com/java/>
+    doap:blog <http://blog.dydra.com/> ;
+    doap:bug-database <https://github.com/dydra/dydra-java/issues> ;
+    doap:category "library"@en ;
+    doap:created "2011-01-01"@en ;
+    doap:description "Dydra.com software development kit (SDK) for Java."@en ;
+    doap:developer _:b1 ;
+    doap:homepage <http://sdk.dydra.com/java/> ;
+    doap:implements "RDF"@en, "SPARQL 1.0"@en, "SPARQL 1.1"@en ;
+    doap:license <http://unlicense.org/UNLICENSE> ;
+    doap:mailing-list <http://groups.google.com/group/dydra> ;
+    doap:name "Dydra SDK for Java"@en ;
+    doap:platform "Java"@en ;
+    doap:programming-language "Java"@en ;
+    doap:repository [
+        doap:browse <https://github.com/dydra/dydra-java> ;
+        doap:location <git:git://github.com/dydra/dydra-java.git> ;
+        a doap:Repository
+    ], [
+        doap:browse <https://github.com/dydra/dydra-java> ;
+        doap:location <git:ssh://git@github.com:dydra/dydra-java.git> ;
+        a doap:Repository
+    ] ;
+    doap:shortdesc "Dydra"@en ;
+    doap:vendor "Datagraph, Inc."@en ;
+    a doap:Project .
+
+_:b1
+    a foaf:Person ;
+    foaf:homepage <http://ar.to/> ;
+    foaf:mbox <mailto:arto@datagraph.org> ;
+    foaf:name "Arto Bendiken"@en .
+
+[]
+    a foaf:Organization ;
+    foaf:homepage <http://datagraph.org/> ;
+    foaf:member _:b1 ;
+    foaf:name "Datagraph, Inc."@en .
+

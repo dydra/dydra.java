@@ -1,0 +1,34 @@
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#blog> <http://blog.dydra.com/> .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#bug-database> <https://github.com/dydra/dydra-java/issues> .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#category> "library"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#created> "2011-01-01"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#description> "Dydra.com software development kit (SDK) for Java."@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#developer> _:b1 .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#homepage> <http://sdk.dydra.com/java/> .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#implements> "RDF"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#implements> "SPARQL 1.0"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#implements> "SPARQL 1.1"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#license> <http://unlicense.org/UNLICENSE> .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#mailing-list> <http://groups.google.com/group/dydra> .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#name> "Dydra SDK for Java"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#platform> "Java"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#programming-language> "Java"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#repository> _:genid1 .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#repository> _:genid2 .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#shortdesc> "Dydra"@en .
+<http://sdk.dydra.com/java/> <http://usefulinc.com/ns/doap#vendor> "Datagraph, Inc."@en .
+<http://sdk.dydra.com/java/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Project> .
+_:b1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:b1 <http://xmlns.com/foaf/0.1/homepage> <http://ar.to/> .
+_:b1 <http://xmlns.com/foaf/0.1/mbox> <mailto:arto@datagraph.org> .
+_:b1 <http://xmlns.com/foaf/0.1/name> "Arto Bendiken"@en .
+_:genid1 <http://usefulinc.com/ns/doap#browse> <https://github.com/dydra/dydra-java> .
+_:genid1 <http://usefulinc.com/ns/doap#location> <git:git://github.com/dydra/dydra-java.git> .
+_:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Repository> .
+_:genid2 <http://usefulinc.com/ns/doap#browse> <https://github.com/dydra/dydra-java> .
+_:genid2 <http://usefulinc.com/ns/doap#location> <git:ssh://git@github.com:dydra/dydra-java.git> .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://usefulinc.com/ns/doap#Repository> .
+_:genid3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Organization> .
+_:genid3 <http://xmlns.com/foaf/0.1/homepage> <http://datagraph.org/> .
+_:genid3 <http://xmlns.com/foaf/0.1/member> _:b1 .
+_:genid3 <http://xmlns.com/foaf/0.1/name> "Datagraph, Inc."@en .
