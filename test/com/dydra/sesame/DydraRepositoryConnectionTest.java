@@ -2,7 +2,9 @@
 
 package com.dydra.sesame;
 
+import com.dydra.test.*;
 import org.junit.*;
+import org.junit.experimental.categories.*;
 import static org.junit.Assert.*;
 import java.io.IOException; 
 import java.util.*;
@@ -265,12 +267,12 @@ public class DydraRepositoryConnectionTest {
     query.evaluate(); // throws HTTPQueryEvaluationException (400 Bad Request)
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testUpdate() throws RepositoryException, MalformedQueryException {
     // TODO: connection.prepareUpdate(QueryLanguage.SPARQL, ...)
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testUpdateWithBindings() throws RepositoryException, MalformedQueryException {
     // TODO: connection.prepareUpdate(QueryLanguage.SPARQL, ...)
   }
@@ -369,7 +371,7 @@ public class DydraRepositoryConnectionTest {
     assertFalse(connection.isEmpty());
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testAutoCommit() throws RepositoryException {
     connection.setAutoCommit(true);
     assertTrue(connection.isAutoCommit());
@@ -378,27 +380,27 @@ public class DydraRepositoryConnectionTest {
     assertFalse(connection.isAutoCommit());
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testCommit() throws RepositoryException {
     // TODO: connection.commit()
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testRollback() throws RepositoryException {
     // TODO: connection.rollback()
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testAdd() throws IOException, RDFParseException, RepositoryException {
     // TODO: connection.add()
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testRemove() throws RepositoryException {
     // TODO: connection.remove()
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testClear() throws RepositoryException {
     // TODO: connection.clear()
   }
@@ -421,17 +423,17 @@ public class DydraRepositoryConnectionTest {
     assertEquals(RDF.NAMESPACE, namespace);
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testSetNamespace() throws RepositoryException {
     // TODO: connection.setNamespace("rdf", RDF.NAMESPACE);
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testRemoveNamespace() throws RepositoryException {
     // TODO: connection.removeNamespace("rdf");
   }
 
-  @Test
+  @Test @Category(Mutative.class)
   public void testClearNamespaces() throws RepositoryException {
     // TODO: connection.clearNamespaces();
   }

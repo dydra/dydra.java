@@ -2,7 +2,9 @@
 
 package com.dydra.sesame;
 
+import com.dydra.test.*;
 import org.junit.*;
+import org.junit.experimental.categories.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import java.util.*;
@@ -45,7 +47,7 @@ public class DydraRepositoryManagerTest {
     this.manager = null;
   }
 
-  @Test(expected=RepositoryReadOnlyException.class)
+  @Test(expected=RepositoryReadOnlyException.class) @Category(Mutative.class)
   public void testAddRepositoryConfig()
       throws RepositoryException, RepositoryConfigException {
     manager.addRepositoryConfig(new RepositoryConfig(this.repositoryName));
@@ -127,7 +129,7 @@ public class DydraRepositoryManagerTest {
     assertFalse(manager.hasRepositoryConfig(UUID.randomUUID().toString()));
   }
 
-  @Test(expected=RepositoryReadOnlyException.class)
+  @Test(expected=RepositoryReadOnlyException.class) @Category(Mutative.class)
   public void testRemoveRepositoryConfig()
       throws RepositoryException, RepositoryConfigException {
     manager.removeRepositoryConfig(this.repositoryName);
