@@ -27,11 +27,11 @@ import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.QueryResult;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.UnsupportedQueryLanguageException;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.http.HTTPQueryEvaluationException;
 import org.openrdf.rio.ParserConfig;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
@@ -257,14 +257,14 @@ public class DydraRepositoryConnectionTest {
     assertEquals(TRIPLE_LIMIT, countTupleQueryResult(result));
   }
 
-  @Test(expected=HTTPQueryEvaluationException.class)
+  @Test(expected=UnsupportedQueryLanguageException.class)
   public void testSeRQLQuery()
       throws RepositoryException, MalformedQueryException, QueryEvaluationException {
     final TupleQuery query = connection.prepareTupleQuery(
       QueryLanguage.SERQL, "SELECT * FROM {S} rdf:type {O}", null);
     assertNotNull(query);
 
-    query.evaluate(); // throws HTTPQueryEvaluationException (400 Bad Request)
+    query.evaluate(); // throws UnsupportedQueryLanguageException (400 Bad Request)
   }
 
   @Test @Category(Mutative.class)
