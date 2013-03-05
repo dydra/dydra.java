@@ -44,6 +44,21 @@ public final class Dydra {
   }
 
   /**
+   * Returns an authenticated URL using an existing session.
+   *
+   * @param  session the session to obtain credentials from
+   * @param  path  a root-relative path, without the initial slash
+   * @return an authenticated URL string
+   */
+  @NotNull
+  public static String getAuthenticatedURL(@NotNull final Session session,
+                                           @NotNull final String path) {
+    return (session.token != null) ?
+      getAuthenticatedURL(session.token, path) :
+      getAuthenticatedURL(session.username, session.password, path);
+  }
+
+  /**
    * Returns an authenticated URL using a given API key.
    *
    * @param  token a valid API token
