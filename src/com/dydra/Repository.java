@@ -7,8 +7,11 @@ import com.dydra.jena.DydraNTripleWriter;
 import com.dydra.jena.DydraQueryExecutionFactory;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Node_Variable;
-import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.graph.TripleMatch;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.update.Update;
+import com.hp.hpl.jena.update.UpdateExecutionFactory;
+import com.hp.hpl.jena.update.UpdateProcessor;
 
 /**
  * Represents a Dydra.com RDF repository.
@@ -148,5 +151,13 @@ public class Repository extends Resource {
       throw new NullPointerException("queryString cannot be null");
 
     return DydraQueryExecutionFactory.prepare(queryString, this);
+  }
+
+  public UpdateProcessor prepareUpdate(@NotNull final Update update) {
+    if (update == null)
+      throw new NullPointerException("update cannot be null");
+
+    return UpdateExecutionFactory.createRemote(update,
+      Dydra.getAuthenticatedURL(this.getSession(), this.name + "/sparql"));
   }
 }
