@@ -29,7 +29,7 @@ import org.openrdf.repository.manager.SystemRepository;
  */
 public class DydraRepositoryManager extends RemoteRepositoryManager {
   public static final String SERVER_BASE_URL_PROPERTY = "com.dydra.sesame.url";
-  public static final String SERVER_BASE_URL = "http://api.dydra.com/sesame2";
+  public static final String SERVER_BASE_URL = "http://dydra.com/sesame2";
 
   protected final String accountName;
   protected boolean isAuthenticated;

@@ -2,7 +2,7 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 
 public class ask {
-  public static final String ENDPOINT = "http://api.dydra.com/jhacker/foaf/sparql";
+  public static final String ENDPOINT = "http://dydra.com/jhacker/foaf/sparql";
   public static final String QUERY    = "ASK WHERE {?s ?p ?o}";
 
   public static void main(String[] args) {

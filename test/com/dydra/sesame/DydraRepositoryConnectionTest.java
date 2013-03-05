@@ -78,7 +78,7 @@ public class DydraRepositoryConnectionTest {
     this.password       = properties.getProperty("com.dydra.sesame.password", null);
     this.repositoryName = properties.getProperty("com.dydra.sesame.repository", "test");
     this.serverURL      = properties.getProperty("com.dydra.sesame.url",
-      "http://api.dydra.com/sesame2") + "/" + this.accountName + "/";
+      "http://dydra.com/sesame2") + "/" + this.accountName + "/";
     this.repositoryURL  = this.serverURL + "repositories/" + this.repositoryName;
     this.repository     = new DydraRepository(this.serverURL, this.repositoryName);
     this.repository.initialize();

@@ -17,7 +17,7 @@ import java.net.URL;
  */
 public class Resource {
   /**
-   * The resource path, relative to http://api.dydra.com/.
+   * The resource path, relative to http://dydra.com/.
    */
   public final String path;
 

@@ -4,7 +4,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 
 public class select {
-  public static final String ENDPOINT = "http://api.dydra.com/jhacker/foaf/sparql";
+  public static final String ENDPOINT = "http://dydra.com/jhacker/foaf/sparql";
   public static final String QUERY    = "SELECT * WHERE {?s ?p ?o} LIMIT 10";
 
   public static void main(String[] args) {

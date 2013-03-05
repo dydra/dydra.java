@@ -11,7 +11,7 @@ import com.dydra.annotation.*;
  * @see http://docs.dydra.com/api
  */
 public final class Dydra {
-  public static final String HOST     = "api.dydra.com";
+  public static final String HOST     = "dydra.com";
   public static final String BASE_URL = "http://" + HOST + "/";
   public static final String AUTH_URL = "http://%s:%s@" + HOST + "/";
 
