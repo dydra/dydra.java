@@ -2,6 +2,10 @@
 Dydra.com Software Development Kit (SDK) for Java
 *************************************************
 
+.. image:: https://api.travis-ci.org/dydra/dydra.java.svg?branch=master
+   :target: https://travis-ci.org/dydra/dydra.java
+   :alt: Travis CI build status
+
 This is the official Java software development kit (SDK) for Dydra.com_,
 the cloud-hosted RDF_ & SPARQL_ database service.
 
