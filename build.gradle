@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+version = file('VERSION').text.trim()
+jar {
+  manifest {
+    attributes("Implementation-Title": "Dydra SDK for Java",
+               "Implementation-Version": version)
+  }
+}
+
+sourceCompatibility = 1.6
+sourceSets {
+  main {
+    java { srcDir 'src' }
+    groovy { srcDir 'src' }
+    resources { srcDir 'etc' }
+  }
+  main {
+    java { srcDir 'test' }
+    groovy { srcDir 'test' }
+    resources { srcDir 'etc' }
+  }
+}
+
+repositories {
+  flatDir { dirs 'lib' }
+  maven { url 'http://mvn.datagraph.org/' }
+  mavenCentral()
+}
+
+dependencies {
+  compile 'com.ning:async-http-client:1.8.14'
+  compile 'com.fasterxml.jackson.core:jackson-core:2.2.1'
+  compile 'org.openrdf.sesame:sesame-runtime:2.7.13'
+  compile 'org.apache.jena:apache-jena-libs:2.12.1'
+  testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
+}
+
+task version << { println version }
