@@ -15,9 +15,10 @@ sourceCompatibility = 1.6
 sourceSets {
   main {
     java { srcDir 'src' }
+    //groovy { srcDir 'src' }
     resources { srcDir 'etc' }
   }
-  main {
+  test {
     java { srcDir 'test' }
     groovy { srcDir 'test' }
     resources { srcDir 'etc' }
@@ -36,6 +37,7 @@ dependencies {
   compile 'org.openrdf.sesame:sesame-runtime:2.7.13'
   compile 'org.apache.jena:apache-jena-libs:2.12.1'
   testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
+  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
 
 task version << { println version }
