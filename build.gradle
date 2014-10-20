@@ -36,6 +36,7 @@ dependencies {
   compile 'com.fasterxml.jackson.core:jackson-core:2.2.1'
   compile 'org.openrdf.sesame:sesame-runtime:2.7.13'
   compile 'org.apache.jena:apache-jena-libs:2.12.1'
+  runtime 'org.slf4j:slf4j-simple:1.6.1'
   testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
