@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
+archivesBaseName = 'dydra'
 version = file('VERSION').text.trim()
 jar {
   manifest {
@@ -14,7 +15,6 @@ sourceCompatibility = 1.6
 sourceSets {
   main {
     java { srcDir 'src' }
-    groovy { srcDir 'src' }
     resources { srcDir 'etc' }
   }
   main {
