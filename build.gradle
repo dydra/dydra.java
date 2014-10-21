@@ -4,6 +4,7 @@ apply plugin: 'maven'
 
 /* Static analysis */
 apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
 apply plugin: 'pmd'
 
 archivesBaseName = 'dydra'
@@ -53,6 +54,12 @@ test {
 
 checkstyle {
   configFile = file('etc/checkstyle/config.xml')
+}
+
+findbugs {
+  effort = 'max'
+  reportLevel = 'low'
+  excludeFilter = file('etc/findbugs/excludes.xml')
 }
 
 pmd {
