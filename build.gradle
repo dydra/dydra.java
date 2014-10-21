@@ -52,7 +52,7 @@ test {
 }
 
 checkstyle {
-  configFile = file('etc/checkstyle/checkstyle.xml')
+  configFile = file('etc/checkstyle/config.xml')
 }
 
 pmd {
