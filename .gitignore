@@ -1,8 +1,9 @@
 .DS_Store
-.gradle/
-.tmp/
-pkg/
-tmp/
+.gradle
+.tmp
+build
+pkg
+tmp
 *~
 *.class
 README.html
