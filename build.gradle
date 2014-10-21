@@ -41,4 +41,10 @@ dependencies {
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
 
+test {
+  testLogging {
+    events "passed", "skipped", "failed", "standardOut", "standardError"
+  }
+}
+
 task version << { println version }
