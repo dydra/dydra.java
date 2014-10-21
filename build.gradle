@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'checkstyle'
 
 archivesBaseName = 'dydra'
 version = file('VERSION').text.trim()
@@ -16,12 +17,12 @@ sourceSets {
   main {
     java { srcDir 'src' }
     //groovy { srcDir 'src' }
-    resources { srcDir 'etc' }
+    resources { srcDir 'etc/resources' }
   }
   test {
     java { srcDir 'test' }
     groovy { srcDir 'test' }
-    resources { srcDir 'etc' }
+    resources { srcDir 'etc/resources' }
   }
 }
 
@@ -45,6 +46,10 @@ test {
   testLogging {
     events "passed", "skipped", "failed", "standardOut", "standardError"
   }
+}
+
+checkstyle {
+  configFile = file("${project.projectDir}/etc/checkstyle/checkstyle.xml")
 }
 
 task version << { println version }
