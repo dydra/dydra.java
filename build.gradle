@@ -2,10 +2,13 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-/* Static analysis */
+/* Static analysis for Java */
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
+
+/* Static analysis for Groovy */
+apply plugin: 'codenarc'
 
 archivesBaseName = 'dydra'
 version = file('VERSION').text.trim()
@@ -56,16 +59,21 @@ checkstyle {
   configFile = file('etc/checkstyle/config.xml')
 }
 
+codenarc {
+  configFile = file('etc/codenarc/ruleset.groovy')
+  reportFormat = 'text'
+}
+
 findbugs {
+  excludeFilter = file('etc/findbugs/excludes.xml')
   effort = 'max'
   reportLevel = 'low'
-  excludeFilter = file('etc/findbugs/excludes.xml')
 }
 
 pmd {
-  consoleOutput = true
   ruleSets = ['basic']
   ruleSetFiles = files('etc/pmd/ruleset.xml')
+  consoleOutput = true
 }
 
 task version << { println version }
